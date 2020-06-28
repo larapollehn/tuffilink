@@ -1,1 +1,3 @@
-# Url Shortener
+# tinylink
+
+Scalable system for shortening links.
