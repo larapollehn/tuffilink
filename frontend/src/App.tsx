@@ -14,7 +14,7 @@ class App extends React.Component<any, any>{
   }
 
   componentDidMount() {
-        axios.get('https://tinylink.larapollehn.de/api/')
+        axios.get('/api/')
             .then((response) => {
             console.log('Backend responded', response.data);
         }).catch((error) => {
