@@ -9,3 +9,8 @@ services:
     build: ./frontend
     ports:
      - 3011:80
+
+  backend:
+    build: ./backend
+    ports:
+     - 3012:3000
