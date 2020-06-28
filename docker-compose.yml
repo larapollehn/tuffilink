@@ -1,0 +1,11 @@
+version: "3"
+services:
+  documentation:
+    build: ./documentation
+    ports:
+     - 3010:80
+    
+  frontend:
+    build: ./frontend
+    ports:
+     - 3011:80
