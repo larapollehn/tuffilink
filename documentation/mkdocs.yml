@@ -4,5 +4,7 @@ theme:
 nav:
   - Home: index.md
   - Requirements: requirements.md
+  - Learning Process:
+      - Day 2: tag2.md
   - Tech Stack: techstack.md
   - System Design: systemdesign.md
