@@ -1,3 +1,4 @@
+require('dotenv-flow').config();
 import AES256 from "../../src/algorithms/AES256";
 import { v4 as uuidv4 } from 'uuid';
 

@@ -1,3 +1,4 @@
+require('dotenv-flow').config();
 import PBKDF2 from "../../src/algorithms/PBKDF2";
 import { v4 as uuidv4 } from 'uuid';
 

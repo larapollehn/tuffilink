@@ -78,3 +78,6 @@ dist
 .yarn/build-state.yml
 .pnp.*
 .idea/
+.env.development
+.env.production
+.env.test

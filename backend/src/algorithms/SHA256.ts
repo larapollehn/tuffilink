@@ -1,4 +1,5 @@
-import crypto from "crypto";
+// @ts-ignore
+import {crypto} from "crypto";
 
 export default class SHA256{
     hashSHA256(data: string): string {

@@ -1,3 +1,4 @@
+require('dotenv-flow').config();
 import Bcrypt from "../../src/algorithms/Bcrypt";
 import { v4 as uuidv4 } from 'uuid';
 

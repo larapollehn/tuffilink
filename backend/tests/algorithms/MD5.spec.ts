@@ -1,3 +1,4 @@
+require('dotenv-flow').config();
 import MD5 from "../../src/algorithms/MD5";
 import { v4 as uuidv4 } from 'uuid';
 

@@ -1,4 +1,6 @@
+// @ts-ignore
 import btoa from 'btoa';
+// @ts-ignore
 import atob from 'atob';
 
 export default class Base64 {

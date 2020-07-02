@@ -10,4 +10,4 @@ router.post('/', function(req, res, next) {
   res.send("Hello world POST");
 });
 
-module.exports = router;
+export default router;

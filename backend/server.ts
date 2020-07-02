@@ -1,10 +1,6 @@
-#!/usr/bin/env node
-
-/**
- * Module dependencies.
- */
-
-const app = require('../app');
+require('dotenv-flow').config();
+import app from './app';
+import log from './src/log/Logger';
 const debug = require('debug')('backend:server');
 const http = require('http');
 
@@ -86,5 +82,5 @@ function onListening() {
   const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  log.info('Listening on ' + bind);
 }

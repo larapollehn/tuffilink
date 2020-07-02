@@ -1,3 +1,4 @@
+require('dotenv-flow').config();
 import RSA from "../../src/algorithms/RSA";
 
 test('RSA works', () => {
