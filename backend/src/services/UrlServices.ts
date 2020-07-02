@@ -1,18 +1,18 @@
 import sqlAccess from "../data/SQLAccess";
 
-const createURL = (expressRequest, expressResponse, next) => {
+const createURL = (expressRequest, expressResponse) => {
 
 };
 
-const getUsersUrls = (expressRequest, expressResponse, next) => {
+const getUsersUrls = (expressRequest, expressResponse) => {
 
 };
 
-const getOriginalUrl = (expressRequest, expressResponse, next) => {
+const getOriginalUrl = (expressRequest, expressResponse) => {
 
 };
 
-const deleteUrl = (expressRequest, expressResponse, next) => {
+const deleteUrl = (expressRequest, expressResponse) => {
 
 };
 
