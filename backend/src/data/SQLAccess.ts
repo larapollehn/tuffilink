@@ -1,5 +1,5 @@
 const Pool = require('pg').Pool;
-const log = require("../log/Logger");
+import log from "../log/Logger";
 
 const pool = new Pool({
     user: process.env.POSTGRES_USER || 'postgres',

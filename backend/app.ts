@@ -4,8 +4,8 @@ const logger = require('morgan');
 const fs = require('fs');
 const path = require('path');
 import log from './src/log/Logger';
-import indexRouter from './src/routes';
-import userRouter from './src/routes/users';
+import urlRouter from './src/routes/UrlRoutes';
+import userRouter from './src/routes/UserRoutes';
 import sqlAccess from './src/data/SQLAccess';
 
 function initialize() {
@@ -39,7 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', indexRouter);
-app.use('/users', userRouter);
+app.use('/url', urlRouter);
+app.use('/user', userRouter);
 
 export default app;
