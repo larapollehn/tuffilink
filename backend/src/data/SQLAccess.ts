@@ -44,7 +44,7 @@ class SQLAccess {
         return this.pool.query({
             rowMode: 'array',
             name: 'create-verification-token',
-            text: 'insert into confirm_account_tokens (token ,user_id) values ($1, $2) return token',
+            text: 'insert into confirm_account_tokens (token ,user_id) values ($1, $2) RETURNING token',
             values: [uuidv4(), insertedUserId]
         });
     }
@@ -62,9 +62,36 @@ class SQLAccess {
         return this.pool.query({
             rowMode: 'array',
             name: 'confirm-user-account',
-            text: 'UPDATE users SET valid = true WHERE users.id = confirm_account_tokens.user_id AND confirm_account_tokens.token = $1',
+            text: `UPDATE users SET valid = true WHERE id = (select users.id from users, confirm_account_tokens WHERE users.id = confirm_account_tokens.user_id AND confirm_account_tokens.token = $1) RETURNING id;`,
             values: [confirm_token]
         });
+    }
+
+    deleteConfirmToken(confirm_token) {
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'delete-confirm-token',
+            text: `DELETE FROM confirm_account_tokens where token = $1;`,
+            values: [confirm_token]
+        });
+    }
+
+    deleteOldResetPasswordToken(email){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'delete-old-reset-password-token',
+            text: 'DELETE FROM forgot_password_tokens WHERE user_id = (SELECT users.id FROM users WHERE email = $1);',
+            values: [email]
+        })
+    }
+
+    createResetPasswordToken(email){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'create-reset-password-token',
+            text: 'insert into forgot_password_tokens (token ,user_id) values ($1, (select id from users where email = $2)) RETURNING token;',
+            values: [uuidv4(), email]
+        })
     }
 }
 
