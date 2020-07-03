@@ -1,10 +1,15 @@
 import sqlAccess from "../data/SQLAccess";
 import log from "../log/Logger";
 import PBKDF2 from "../algorithms/PBKDF2";
-import { v4 as uuidv4 } from 'uuid';
+import JWT from "../algorithms/JWT";
+import {v4 as uuidv4} from 'uuid';
 import {notify} from "./EmailService";
 
+const JWT_SECRET = process.env.JWT_SECRET;
+const TTL = 1000 * 60 * 60 * 24 * 7;
+
 const pbkdf: PBKDF2 = new PBKDF2(20);
+const jwt: JWT = new JWT(JWT_SECRET, TTL);
 
 const registerNewUser = async (expressRequest, expressResponse) => {
     const username: string = expressRequest.body['username'];
@@ -25,7 +30,7 @@ const registerNewUser = async (expressRequest, expressResponse) => {
             });
             const insertedUserId = insertUserResult.rows[0][0];
             log.debug("User was registered and created in db with following id: ", insertedUserId);
-            try{
+            try {
                 const insertVerificationResult = await sqlAccess.query({
                     rowMode: 'array',
                     name: 'create-verification-token',
@@ -34,17 +39,17 @@ const registerNewUser = async (expressRequest, expressResponse) => {
                 });
                 const insertedToken = insertVerificationResult.rows[0][0];
                 log.debug('Email verification token created for user', insertedToken);
-                if (process.env.SEND_EMAIL_VERIFICATION === 'true'){
+                if (process.env.SEND_EMAIL_VERIFICATION === 'true') {
                     await notify(email, "Please very your email to use tinyurl", insertedToken);
                 }
                 await sqlAccess.query('COMMIT');
                 expressResponse.status(201).send('User registered and created in db');
-            }catch (e) {
+            } catch (e) {
                 await sqlAccess.query('ROLLBACK');
                 log.debug('Can not create email verification token. Sorry bro', e.stack);
                 expressResponse.status(500).send("An error happened. Try again");
             }
-        }catch (e) {
+        } catch (e) {
             await sqlAccess.query('ROLLBACK');
             log.debug('An error happened while creating new user', e.stack);
             expressResponse.status(409).send(e.stack);
@@ -54,8 +59,43 @@ const registerNewUser = async (expressRequest, expressResponse) => {
     }
 };
 
-const loginUser = (expressRequest, expressResponse) => {
+const loginUser = async (expressRequest, expressResponse) => {
+    const username = expressRequest.body['username'];
+    const password = expressRequest.body['password'];
+    log.debug('user wants to login with following credentials:', username, password);
 
+    if (username && typeof username === 'string' &&
+        password && typeof password === 'string') {
+        try {
+            const QueryUserLoginResult = await sqlAccess.query({
+                rowMode: 'array',
+                name: 'retrieveUserData',
+                text: 'SELECT * FROM users WHERE username = $1',
+                values: [username]
+            });
+            log.debug('Retrieved user data:', QueryUserLoginResult.rows);
+            const userArray = QueryUserLoginResult.rows;
+            if (userArray.length !== 1){
+                expressResponse.status(404).send('User not found');
+            }
+            const userData = userArray[0];
+            const userPasswordHash = userData[2];
+            if (!pbkdf.verify(password, userPasswordHash)){
+                expressResponse.status(401).send('Wrong password');
+            }
+            if (process.env.SEND_EMAIL_VERIFICATION === 'true' && userData[4] === false){
+                expressResponse.status(403).send('Account not verified');
+            }
+            const tokenPayload = {
+                'username': username
+            };
+            let userJWTToken = jwt.generate(tokenPayload);
+            expressResponse.status(200).send({'token': userJWTToken});
+        } catch (e){
+            log.debug('Could not get requested user data', e);
+            expressResponse.status(500).send(e);
+        }
+    }
 };
 
 const changeUserPassword = (expressRequest, expressResponse) => {

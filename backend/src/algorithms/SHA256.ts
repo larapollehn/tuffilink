@@ -1,5 +1,4 @@
-// @ts-ignore
-import {crypto} from "crypto";
+const crypto = require('crypto');
 
 export default class SHA256{
     hashSHA256(data: string): string {
