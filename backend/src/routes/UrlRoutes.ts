@@ -1,7 +1,7 @@
 const express = require('express');
 import {
     createURL,
-    getOriginalUrl,
+    getUserUrlsCount,
     getUsersUrls,
     deleteUrl
 } from "../services/UrlServices";
@@ -11,8 +11,8 @@ const urlRouter = express.Router();
 
 urlRouter.get('/', protectedPath, getUsersUrls);
 urlRouter.post('/', protectedPath, createURL);
+urlRouter.get('/count', protectedPath, getUserUrlsCount);
 urlRouter.delete('/:url_id', protectedPath, deleteUrl);
-urlRouter.get('/original/:shorturl', getOriginalUrl);
 
 
 export default urlRouter;

@@ -1,7 +1,6 @@
 import sqlAccess from "../dataaccess/SQLAccess";
 import log from "../log/Logger";
 import {url} from "../algorithms/UrlShortener";
-import {createDeflateRaw} from "zlib";
 
 const createURL = async (expressRequest, expressResponse) => {
     const originalUrl = expressRequest.body['original_url'];
@@ -21,6 +20,7 @@ const createURL = async (expressRequest, expressResponse) => {
         expressResponse.status(400).send('Url is missing');
     }
 };
+
 
 const getUsersUrls =  async (expressRequest, expressResponse) => {
     const username = expressRequest.user['username'];
@@ -56,7 +56,24 @@ const getUsersUrls =  async (expressRequest, expressResponse) => {
     }
 };
 
-const getOriginalUrl = (expressRequest, expressResponse) => {
+const getUserUrlsCount = async (expressRequest, expressResponse) => {
+    const username = expressRequest.user['username'];
+    const userid = expressRequest.user['id'];
+    const requestedUserId = expressRequest.query.user_id;
+    log.debug('User url count requested with:', username, userid, requestedUserId);
+
+    if(username && typeof username === 'string' && userid && typeof userid === 'number' && requestedUserId && typeof requestedUserId === 'string'){
+        if (String(userid) === requestedUserId){
+            const getUrlCountResult = await sqlAccess.urlCount(userid);
+            log.debug(getUrlCountResult.rows);
+            expressResponse.status(200).send(getUrlCountResult.rows[0][0]);
+        } else {
+            expressResponse.status(403).send('User not authorized');
+            return;
+        }
+    } else {
+        expressResponse.status(400).send('Missing data or wrong type');
+    }
 
 };
 
@@ -67,6 +84,6 @@ const deleteUrl = (expressRequest, expressResponse) => {
 export {
     createURL,
     getUsersUrls,
-    getOriginalUrl,
+    getUserUrlsCount,
     deleteUrl
 };

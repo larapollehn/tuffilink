@@ -143,8 +143,17 @@ class SQLAccess {
         return this.pool.query({
             rowMode: 'array',
             name: 'get-users-urls',
-            text: 'SELECT * FROM links WHERE user_id = $1 ORDER BY id DESC OFFSET $2 LIMIT $3',
-            values: [user_id, page_number, page_size]
+            text: 'SELECT * FROM links WHERE user_id = $1 ORDER BY id DESC OFFSET $2  LIMIT $3',
+            values: [user_id, page_number * page_size, page_size]
+        })
+    }
+
+    urlCount(user_id){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'get-users-url-count',
+            text: 'SELECT COUNT(*) FROM links WHERE user_id = $1',
+            values: [user_id]
         })
     }
 }
