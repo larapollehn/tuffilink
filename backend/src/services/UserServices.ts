@@ -70,6 +70,7 @@ const loginUser = async (expressRequest, expressResponse) => {
             const userArray = QueryUserLoginResult.rows;
             if (userArray.length !== 1) {
                 expressResponse.status(404).send('User not found');
+                return;
             }
 
             const userData = userArray[0];
@@ -78,16 +79,19 @@ const loginUser = async (expressRequest, expressResponse) => {
             const userPasswordHash = userData[2];
             if (!pbkdf.verify(password, userPasswordHash)) {
                 expressResponse.status(401).send('Wrong password');
+                return;
             }
 
             // Verify that user's email is verified
             if (process.env.SEND_EMAIL === 'true' && userData[4] === false) {
                 expressResponse.status(403).send('Account not verified');
+                return;
             }
 
             // Generate JWT token. We only need the user name of the user
             // Never include sensible information in the token
             const tokenPayload = {
+                'id': userData[0],
                 'username': username
             };
             let userJWTToken = jwt.generate(tokenPayload);
@@ -143,6 +147,7 @@ const resetForgottenPassword = async (expressRequest, expressResponse) => {
             if (resetPasswordResult.length !== 1){
                 sqlAccess.rollback();
                 expressResponse.status(404).send('Given dataaccess not found');
+                return;
             } else {
                 log.debug('User password was changed for user with id:', resetPasswordResult[0][0]);
                 await sqlAccess.deleteUsedResetPasswordToken(forgotPasswordToken);
@@ -173,6 +178,7 @@ const sendResetPasswordMail = async (expressRequest, expressResponse) => {
             const queryResult = createResetTokenResult.rows;
             if(queryResult.length !== 1){
                 expressResponse.status(404).send('User not found');
+                return;
             } else {
                 const resetPasswordToken = queryResult[0][0];
                 log.debug('User reset token was created and will be send per email:', resetPasswordToken);
@@ -185,7 +191,6 @@ const sendResetPasswordMail = async (expressRequest, expressResponse) => {
             log.debug('Could not create reset password token', e);
             expressResponse.status(500).send(e.message);
         }
-
     } else {
         expressResponse.status(400).send('User email is missing');
     }
@@ -206,6 +211,7 @@ const confirmUserAccount = async (expressRequest, expressResponse) => {
             if (confirmedUserId.length !== 1) {
                 await sqlAccess.rollback();
                 expressResponse.status(404).send('User account was not found');
+                return;
             } else {
                 await sqlAccess.deleteConfirmToken(confirmToken);
                 await sqlAccess.commit();

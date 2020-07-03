@@ -11,8 +11,8 @@ const urlRouter = express.Router();
 
 urlRouter.get('/', protectedPath, getUsersUrls);
 urlRouter.post('/', protectedPath, createURL);
-urlRouter.get('/original/:shorturl', getOriginalUrl);
 urlRouter.delete('/:url_id', protectedPath, deleteUrl);
+urlRouter.get('/original/:shorturl', getOriginalUrl);
 
 
 export default urlRouter;

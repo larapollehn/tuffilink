@@ -44,7 +44,7 @@ class SQLAccess {
         return this.pool.query({
             rowMode: 'array',
             name: 'create-verification-token',
-            text: 'INSERT INTO into confirm_account_tokens (token ,user_id) VALUES ($1, $2) RETURNING token',
+            text: 'INSERT INTO confirm_account_tokens (token ,user_id) VALUES ($1, $2) RETURNING token',
             values: [uuidv4(), insertedUserId]
         });
     }
@@ -137,6 +137,15 @@ class SQLAccess {
             text: 'UPDATE links SET visit_count = visit_count+1 WHERE shorturl = $1 RETURNING originalurl',
             values: [shortUrl]
         });
+    }
+
+    getUsersUrls(user_id, page_number, page_size){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'get-users-urls',
+            text: 'SELECT * FROM links WHERE user_id = $1 ORDER BY id DESC OFFSET $2 LIMIT $3',
+            values: [user_id, page_number, page_size]
+        })
     }
 }
 
