@@ -28,7 +28,7 @@ class App extends React.Component<any, any> {
                     "content-type": "application/json"
                 },
                 data: {
-                    username: "max",
+                    username: "max4",
                     password: "max"
                 }
             }).then((response) => {
