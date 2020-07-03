@@ -64,9 +64,10 @@ const loginUser = async (expressRequest, expressResponse) => {
     const password = expressRequest.body['password'];
     log.debug('user wants to login with following credentials:', username, password);
 
-    if (username && typeof username === 'string' &&
-        password && typeof password === 'string') {
+    if (username && typeof username === 'string' && password && typeof password === 'string') {
         try {
+
+            // Query in database for eventual stored user data
             const QueryUserLoginResult = await sqlAccess.query({
                 rowMode: 'array',
                 name: 'retrieveUserData',
@@ -74,18 +75,27 @@ const loginUser = async (expressRequest, expressResponse) => {
                 values: [username]
             });
             log.debug('Retrieved user data:', QueryUserLoginResult.rows);
+
             const userArray = QueryUserLoginResult.rows;
             if (userArray.length !== 1){
                 expressResponse.status(404).send('User not found');
             }
+
             const userData = userArray[0];
+
+            // Verify input passwith with stored hashed password
             const userPasswordHash = userData[2];
             if (!pbkdf.verify(password, userPasswordHash)){
                 expressResponse.status(401).send('Wrong password');
             }
+
+            // Verify that user's email is verified
             if (process.env.SEND_EMAIL_VERIFICATION === 'true' && userData[4] === false){
                 expressResponse.status(403).send('Account not verified');
             }
+
+            // Generate JWT token. We only need the user name of the user
+            // Never include sensible information in the token
             const tokenPayload = {
                 'username': username
             };
