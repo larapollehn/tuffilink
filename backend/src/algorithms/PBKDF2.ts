@@ -38,7 +38,7 @@ export class PBKDF2{
         return storedHash === hashedInput;
     }
 }
-const HASHING_ITERATIONS = 1000;
+const HASHING_ITERATIONS = 10;
 
 export const pbkdf = new PBKDF2(HASHING_ITERATIONS);
 
