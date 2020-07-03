@@ -1,7 +1,7 @@
 const pbkdf2 = require('pbkdf2');
 import { v4 as uuidv4 } from 'uuid';
 
-export default class PBKDF2{
+export class PBKDF2{
     private readonly iterations;
     private readonly keyLength;
     private readonly algorithm;
@@ -38,3 +38,7 @@ export default class PBKDF2{
         return storedHash === hashedInput;
     }
 }
+const HASHING_ITERATIONS = 1000;
+
+export const pbkdf = new PBKDF2(HASHING_ITERATIONS);
+

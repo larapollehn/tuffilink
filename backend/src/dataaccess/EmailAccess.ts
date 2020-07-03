@@ -1,17 +1,17 @@
 const nodemailer = require("nodemailer");
 
-const EMAILPW = process.env.MAILPWD;
+const MAILPWD = process.env.MAILPWD;
 const SENDER = process.env.SENDER;
 const HOST = process.env.HOST;
 
-class EmailService{
+class EmailAccess{
     private transporter = nodemailer.createTransport({
         host: HOST,
         port: 587,
         secure: false,
         auth: {
             user: SENDER,
-            pass: EMAILPW,
+            pass: MAILPWD,
         },
     });
 
@@ -34,5 +34,5 @@ class EmailService{
     }
 }
 
-const emailService = new EmailService();
+const emailService = new EmailAccess();
 export default emailService;

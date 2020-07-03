@@ -1,13 +1,10 @@
-import sqlAccess from "../data/SQLAccess";
+import sqlAccess from "../dataaccess/SQLAccess";
 import log from "../log/Logger";
-import PBKDF2 from "../algorithms/PBKDF2";
-import JWT from "../algorithms/JWT";
-import emailService from "./EmailService";
-const JWT_SECRET = process.env.JWT_SECRET;
-const TTL = 1000 * 60 * 60 * 24 * 7;
+import {pbkdf} from "../algorithms/PBKDF2";
+import {jwt} from "../algorithms/JWT";
+import emailAccess from "../dataaccess/EmailAccess";
+import exp from "constants";
 
-const pbkdf: PBKDF2 = new PBKDF2(20);
-const jwt: JWT = new JWT(JWT_SECRET, TTL);
 
 /**
  * https://app.swaggerhub.com/apis/larapollehn/tinylink/1.0.0#/user/post_user
@@ -21,7 +18,7 @@ const registerNewUser = async (expressRequest, expressResponse) => {
     const hashedPassword = pbkdf.hashPBKDF2(password);
     const email: string = expressRequest.body['email'];
 
-    log.debug('User wants to be registered with following data', username, password, email);
+    log.debug('User wants to be registered with following dataaccess', username, password, email);
 
     if (username && typeof username === 'string' && password && typeof password === 'string' && email && typeof email === 'string') {
         try {
@@ -34,7 +31,7 @@ const registerNewUser = async (expressRequest, expressResponse) => {
                 const insertedToken = insertVerificationResult.rows[0][0];
                 log.debug('Email verification token created for user', insertedToken);
                 if (process.env.SEND_EMAIL === 'true') {
-                    await emailService.sendConfirmAccountMail(email, insertedToken);
+                    await emailAccess.sendConfirmAccountMail(email, insertedToken);
                 }
                 await sqlAccess.commit();
                 expressResponse.status(201).send('User registered and created in db');
@@ -67,9 +64,9 @@ const loginUser = async (expressRequest, expressResponse) => {
     if (username && typeof username === 'string' && password && typeof password === 'string') {
         try {
 
-            // Query in database for eventual stored user data
+            // Query in database for eventual stored user dataaccess
             const QueryUserLoginResult = await sqlAccess.userLoginResult(username);
-            log.debug('Retrieved user data:', QueryUserLoginResult.rows);
+            log.debug('Retrieved user dataaccess:', QueryUserLoginResult.rows);
 
             const userArray = QueryUserLoginResult.rows;
             if (userArray.length !== 1) {
@@ -97,16 +94,43 @@ const loginUser = async (expressRequest, expressResponse) => {
             let userJWTToken = jwt.generate(tokenPayload);
             expressResponse.status(200).send({'token': userJWTToken});
         } catch (e) {
-            log.debug('Could not get requested user data', e);
+            log.debug('Could not get requested user dataaccess', e);
             expressResponse.status(500).send(e);
         }
+    } else {
+        expressResponse.status(400).send('User data for login missing');
     }
 };
 
-const changeUserPassword = (expressRequest, expressResponse) => {
-
+/**
+ * https://app.swaggerhub.com/apis/larapollehn/tinylink/1.0.0#/user/put_user_password
+ *
+ * @param expressRequest
+ * @param expressResponse
+ */
+const changeUserPassword = async (expressRequest, expressResponse) => {
+    const newPassword = expressRequest.body['new_password'];
+    const newHashedPassword = pbkdf.hashPBKDF2(newPassword);
+    const user = expressRequest.user['username'];
+    if(newPassword && typeof newPassword === 'string' && user && typeof user === 'string'){
+        try {
+            await sqlAccess.changePassword(newHashedPassword, user).rows;
+            log.debug('User password was changed');
+            expressResponse.status(200).send('User password was changed');
+        } catch (e) {
+            expressResponse.status(500).send('User password change not successful', e.stack);
+        }
+    } else {
+        expressResponse.status(400).send('Data for password change missing');
+    }
 };
 
+/**
+ * https://app.swaggerhub.com/apis/larapollehn/tinylink/1.0.0#/user/put_user_forgot_password_reset
+ *
+ * @param expressRequest
+ * @param expressResponse
+ */
 const resetForgottenPassword = async (expressRequest, expressResponse) => {
     const forgotPasswordToken = expressRequest.body['reset_password_token'];
     const newPassword = expressRequest.body['new_password'];
@@ -119,7 +143,7 @@ const resetForgottenPassword = async (expressRequest, expressResponse) => {
             log.debug('User password change result:', resetPasswordResult);
             if (resetPasswordResult.length !== 1){
                 sqlAccess.rollback();
-                expressResponse.status(404).send('Given data not found');
+                expressResponse.status(404).send('Given dataaccess not found');
             } else {
                 log.debug('User password was changed for user with id:', resetPasswordResult[0][0]);
                 await sqlAccess.deleteUsedResetPasswordToken(forgotPasswordToken);
@@ -154,7 +178,7 @@ const sendResetPasswordMail = async (expressRequest, expressResponse) => {
                 const resetPasswordToken = queryResult[0][0];
                 log.debug('User reset token was created and will be send per email:', resetPasswordToken);
                 if (process.env.SEND_EMAIL === 'true'){
-                    await emailService.sendResetPasswordLink(userEmail, resetPasswordToken);
+                    await emailAccess.sendResetPasswordLink(userEmail, resetPasswordToken);
                 }
                 expressResponse.status(201).send('Reset password token was created');
             }

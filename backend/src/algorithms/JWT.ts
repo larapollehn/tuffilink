@@ -1,10 +1,9 @@
 import Base64 from "./Base64";
 import SHA256 from "./SHA256";
-import has = Reflect.has;
 
-export default class JWT{
-    private secret;
-    private ttl;
+export class JWT{
+    private readonly secret;
+    private readonly ttl;
     base = new Base64();
     sha = new SHA256();
 
@@ -43,6 +42,7 @@ export default class JWT{
      */
     getPayload(token: string): {}{
         let tokenParts = token.split('.');
+
         if(tokenParts.length !== 3){
             throw new Error('Malformed token');
         }
@@ -63,3 +63,7 @@ export default class JWT{
         return payload;
     }
 }
+
+const JWT_SECRET = process.env.JWT_SECRET;
+const TTL = 1000 * 60 * 60 * 24 * 7;
+export const jwt = new JWT(JWT_SECRET, TTL);

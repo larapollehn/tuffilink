@@ -52,7 +52,7 @@ class SQLAccess {
     userLoginResult(username) {
         return this.pool.query({
             rowMode: 'array',
-            name: 'retrieve-user-data',
+            name: 'retrieve-user-dataaccess',
             text: 'SELECT * FROM users WHERE username = $1',
             values: [username]
         });
@@ -109,6 +109,15 @@ class SQLAccess {
             name: 'reset-password',
             text: 'UPDATE users SET password_hash = $1 WHERE id = (SELECT user_id FROM forgot_password_tokens WHERE token = $2) RETURNING id',
             values: [hashedPassword, resetToken]
+        })
+    }
+
+    changePassword(newHashedPassword, username){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'change-password',
+            text: 'UPDATE users SET password_hash = $1 WHERE username = $2 RETURNING id',
+            values: [newHashedPassword, username]
         })
     }
 }

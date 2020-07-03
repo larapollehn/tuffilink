@@ -1,5 +1,5 @@
 require('dotenv-flow').config();
-import JWT from "../../src/algorithms/JWT";
+import {JWT} from "../../src/algorithms/JWT";
 import Base64 from "../../src/algorithms/Base64";
 import { v4 as uuidv4 } from 'uuid';
 

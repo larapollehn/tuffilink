@@ -6,7 +6,7 @@ const path = require('path');
 import log from './src/log/Logger';
 import urlRouter from './src/routes/UrlRoutes';
 import userRouter from './src/routes/UserRoutes';
-import sqlAccess from './src/data/SQLAccess';
+import sqlAccess from './src/dataaccess/SQLAccess';
 
 async function initialize() {
     log.debug("Start initializing database")

@@ -1,4 +1,4 @@
-import sqlAccess from "../data/SQLAccess";
+import sqlAccess from "../dataaccess/SQLAccess";
 
 const createURL = (expressRequest, expressResponse) => {
 
