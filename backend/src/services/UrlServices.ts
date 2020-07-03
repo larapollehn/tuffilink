@@ -77,8 +77,27 @@ const getUserUrlsCount = async (expressRequest, expressResponse) => {
 
 };
 
-const deleteUrl = (expressRequest, expressResponse) => {
+const deleteUrl = async (expressRequest, expressResponse) => {
+    const userid = expressRequest.user['id'];
+    const url_id = expressRequest.params.url_id;
+    log.debug('Request to delete url:', userid, typeof userid, url_id, typeof url_id);
 
+     if (userid && typeof userid === 'number' && url_id && typeof url_id === 'string'){
+         try{
+             const ret = await sqlAccess.deleteUrl(userid, url_id);
+             log.debug("Deleting query returned the following id", ret.rows)
+             if(ret.rows.length === 1) {
+                 expressResponse.status(204).send('');
+             }else{
+                 expressResponse.status(403).send('User not authorized');
+             }
+         } catch (e) {
+             log.debug(e.stack);
+             expressResponse.status(403).send('User not authorized');
+         }
+     } else {
+         expressResponse.status(400).send('Missing data or wrong type');
+     }
 };
 
 export {

@@ -156,6 +156,15 @@ class SQLAccess {
             values: [user_id]
         })
     }
+
+    deleteUrl(userid, url_id){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'delete-url',
+            text: 'DELETE FROM links WHERE id = $1 AND user_id = $2 RETURNING id',
+            values: [url_id, userid]
+        })
+    }
 }
 
 const sqlAccess = new SQLAccess();
