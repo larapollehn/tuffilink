@@ -2,12 +2,14 @@ version: "3"
 services:
   frontend:
     build: ./frontend
+    container_name: frontend
     restart: always
     ports:
      - 3011:80
 
   backend:
     build: ./backend
+    container_name: backend
     restart: always
     ports:
      - 3012:3000
