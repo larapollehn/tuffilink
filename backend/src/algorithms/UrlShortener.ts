@@ -13,5 +13,4 @@ export default class UrlShortener{
     }
 }
 
-let url = new UrlShortener();
-console.log(url.shortenLink('https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice'));
+export const url = new UrlShortener();

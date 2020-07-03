@@ -37,12 +37,12 @@ const registerNewUser = async (expressRequest, expressResponse) => {
             } catch (e) {
                 await sqlAccess.rollback();
                 log.debug('Can not create email verification token. Sorry bro', e.stack);
-                expressResponse.status(500).send("An error happened. Try again");
+                expressResponse.status(500).send(e.message);
             }
         } catch (e) {
             await sqlAccess.rollback();
             log.debug('An error happened while creating new user', e.stack);
-            expressResponse.status(409).send(e.stack);
+            expressResponse.status(409).send(e.message);
         }
     } else {
         expressResponse.status(400).send('Username, password and or email are missing');
@@ -94,7 +94,7 @@ const loginUser = async (expressRequest, expressResponse) => {
             expressResponse.status(200).send({'token': userJWTToken});
         } catch (e) {
             log.debug('Could not get requested user dataaccess', e);
-            expressResponse.status(500).send(e);
+            expressResponse.status(500).send(e.message);
         }
     } else {
         expressResponse.status(400).send('User data for login missing');
@@ -117,7 +117,7 @@ const changeUserPassword = async (expressRequest, expressResponse) => {
             log.debug('User password was changed');
             expressResponse.status(200).send('User password was changed');
         } catch (e) {
-            expressResponse.status(500).send('User password change not successful', e.stack);
+            expressResponse.status(500).send('User password change not successful', e.message);
         }
     } else {
         expressResponse.status(400).send('Data for password change missing');
@@ -151,7 +151,7 @@ const resetForgottenPassword = async (expressRequest, expressResponse) => {
             }
         } catch (e) {
             sqlAccess.rollback();
-            expressResponse.status(404).send('User not found');
+            expressResponse.status(404).send(e.message);
         }
     } else {
         expressResponse.status(400).send('Forgot password token or new password are missing');
@@ -183,7 +183,7 @@ const sendResetPasswordMail = async (expressRequest, expressResponse) => {
             }
         } catch (e) {
             log.debug('Could not create reset password token', e);
-            expressResponse.status(500).send(e);
+            expressResponse.status(500).send(e.message);
         }
 
     } else {
@@ -215,7 +215,7 @@ const confirmUserAccount = async (expressRequest, expressResponse) => {
         } catch (e) {
             await sqlAccess.rollback();
             log.debug('User account could not be confirmed', e.stack);
-            expressResponse.status(404).send(e.stack);
+            expressResponse.status(404).send(e.message);
         }
     } else {
         expressResponse.status(400).send('User confirmToken is missing');

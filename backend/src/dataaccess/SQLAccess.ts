@@ -44,7 +44,7 @@ class SQLAccess {
         return this.pool.query({
             rowMode: 'array',
             name: 'create-verification-token',
-            text: 'insert into confirm_account_tokens (token ,user_id) values ($1, $2) RETURNING token',
+            text: 'INSERT INTO into confirm_account_tokens (token ,user_id) VALUES ($1, $2) RETURNING token',
             values: [uuidv4(), insertedUserId]
         });
     }
@@ -119,6 +119,24 @@ class SQLAccess {
             text: 'UPDATE users SET password_hash = $1 WHERE username = $2 RETURNING id',
             values: [newHashedPassword, username]
         })
+    }
+
+    saveUrl(shortUrl, originalUrl, username){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'save-url',
+            text: 'INSERT INTO links (shorturl, originalurl, user_id) VALUES ($1, $2, (SELECT id FROM users WHERE username = $3)) RETURNING id',
+            values: [shortUrl, originalUrl, username]
+        })
+    }
+
+    getOriginalUrl(shortUrl){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'get-original-url',
+            text: 'UPDATE links SET visit_count = visit_count+1 WHERE shorturl = $1 RETURNING originalurl',
+            values: [shortUrl]
+        });
     }
 }
 

@@ -6,6 +6,7 @@ const path = require('path');
 import log from './src/log/Logger';
 import urlRouter from './src/routes/UrlRoutes';
 import userRouter from './src/routes/UserRoutes';
+import redirectRouter from "./src/routes/RedirectRoutes";
 import sqlAccess from './src/dataaccess/SQLAccess';
 
 async function initialize() {
@@ -41,5 +42,6 @@ app.use(cookieParser());
 
 app.use('/url', urlRouter);
 app.use('/user', userRouter);
+app.use('/', redirectRouter);
 
 export default app;
