@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "secure": false,
+  "homepage": "https://tinylink.larapollehn/ui",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -12,9 +13,11 @@
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "axios": "^0.19.2",
+    "history": "^5.0.0",
     "http-proxy-middleware": "^1.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "typescript": "^3.7.5"
   },
@@ -38,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^5.1.5"
   }
 }

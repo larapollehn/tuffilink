@@ -1,29 +1,35 @@
 import React from 'react';
 import './App.css';
 import axios from 'axios';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 class App extends React.Component<any, any> {
     render() {
         return (
-            <div className="App">
-                <header className="App-header">
+            <Router basename={'/ui'}>
+                <Switch>
+                    <Route path={`${process.env.PUBLIC_URL}/`} exact>
+                        <div className="App">
+                            <header className="App-header">
 
-                </header>
-            </div>
+                            </header>
+                        </div>
+                    </Route>
+                </Switch>
+            </Router>
         );
     }
 
     componentDidMount() {
         axios({
-                url: "/api/user",
+                url: "/api/user/login",
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
                 },
                 data: {
-                    username: "maxmustermann",
-                    password: "astrongpassword",
-                    email: "max@mustermann.de"
+                    username: "max",
+                    password: "max"
                 }
             }).then((response) => {
                 console.log('Backend responded', response.data);
