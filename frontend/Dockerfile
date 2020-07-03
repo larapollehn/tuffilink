@@ -14,7 +14,7 @@ RUN npm run build
 
 FROM nginx:alpine
 
-COPY --from=build /app/build/ /var/www
+COPY --from=build /app/build/ /var/www/frontend
 
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
