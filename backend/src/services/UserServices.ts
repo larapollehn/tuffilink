@@ -14,12 +14,12 @@ import emailAccess from "../dataaccess/EmailAccess";
 const registerNewUser = async (expressRequest, expressResponse) => {
     const username: string = expressRequest.body['username'];
     const password: string = expressRequest.body['password'];
-    const hashedPassword = pbkdf.hashPBKDF2(password);
     const email: string = expressRequest.body['email'];
 
     log.debug('User wants to be registered with following dataaccess', username, password, email);
 
     if (username && typeof username === 'string' && password && typeof password === 'string' && email && typeof email === 'string') {
+        const hashedPassword = pbkdf.hashPBKDF2(password);
         try {
             await sqlAccess.begin();
             const insertUserResult = await sqlAccess.registerUserResult(username, hashedPassword, email);
