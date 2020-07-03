@@ -1,16 +1,29 @@
 version: "3"
 services:
-  documentation:
-    build: ./documentation
-    ports:
-     - 3010:80
-    
   frontend:
     build: ./frontend
+    restart: always
     ports:
      - 3011:80
 
   backend:
     build: ./backend
+    restart: always
     ports:
      - 3012:3000
+    depends_on:
+     - database
+
+  database:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tinylink
+    volumes:
+    - postgres-data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres-data:
