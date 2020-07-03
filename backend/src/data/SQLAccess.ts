@@ -85,12 +85,30 @@ class SQLAccess {
         })
     }
 
+    deleteUsedResetPasswordToken(resetToken){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'delete-used-reset-token',
+            text: `DELETE FROM forgot_password_tokens where token = $1;`,
+            value: [resetToken]
+        })
+    }
+
     createResetPasswordToken(email){
         return this.pool.query({
             rowMode: 'array',
             name: 'create-reset-password-token',
             text: 'insert into forgot_password_tokens (token ,user_id) values ($1, (select id from users where email = $2)) RETURNING token;',
             values: [uuidv4(), email]
+        })
+    }
+
+    resetPassword(resetToken, hashedPassword){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'reset-password',
+            text: 'UPDATE users SET password_hash = $1 WHERE id = (SELECT user_id FROM forgot_password_tokens WHERE token = $2) RETURNING id',
+            values: [hashedPassword, resetToken]
         })
     }
 }

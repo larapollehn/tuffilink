@@ -107,8 +107,32 @@ const changeUserPassword = (expressRequest, expressResponse) => {
 
 };
 
-const resetForgottenPassword = (expressRequest, expressResponse) => {
-
+const resetForgottenPassword = async (expressRequest, expressResponse) => {
+    const forgotPasswordToken = expressRequest.body['reset_password_token'];
+    const newPassword = expressRequest.body['new_password'];
+    const hashedNewPassword = pbkdf.hashPBKDF2(newPassword);
+    if (forgotPasswordToken && typeof forgotPasswordToken === 'string' &&
+        newPassword && typeof newPassword === 'string'){
+        try{
+            sqlAccess.begin();
+            const resetPasswordResult = await sqlAccess.resetPassword(forgotPasswordToken, hashedNewPassword).rows;
+            log.debug('User password change result:', resetPasswordResult);
+            if (resetPasswordResult.length !== 1){
+                sqlAccess.rollback();
+                expressResponse.status(404).send('Given data not found');
+            } else {
+                log.debug('User password was changed for user with id:', resetPasswordResult[0][0]);
+                await sqlAccess.deleteUsedResetPasswordToken(forgotPasswordToken);
+                sqlAccess.commit();
+                expressResponse.status(200).send('User password was changed');
+            }
+        } catch (e) {
+            sqlAccess.rollback();
+            expressResponse.status(404).send('User not found');
+        }
+    } else {
+        expressResponse.status(400).send('Forgot password token or new password are missing');
+    }
 };
 
 /**
