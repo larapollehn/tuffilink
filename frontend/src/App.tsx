@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Home from "./components/Home";
 import Register from "./components/Register";
 import PasswordReset from "./components/PasswordReset";
+import Userpage from "./components/Userpage";
 
 class App extends React.Component<any, any> {
     render() {
@@ -13,6 +14,7 @@ class App extends React.Component<any, any> {
                     <Route path={`/`} exact><Home/></Route>
                     <Route path={`/register`} exact><Register/></Route>
                     <Route path={`/passwordReset`} exact><PasswordReset/></Route>
+                    <Route path={`/userpage`} exact><Userpage/></Route>
                 </Switch>
             </Router>
         );

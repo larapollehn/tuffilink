@@ -10,13 +10,15 @@ import Col from "react-bootstrap/Col";
 import axios from "axios";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {withRouter} from 'react-router-dom';
+
 
 import localStorageManager from "../models/LocalStorage";
 import {Link} from "react-router-dom";
 import Userpage from "./Userpage";
 
-class Home extends React.Component{
-    constructor(props: {}) {
+class Home extends React.Component<any, any> {
+    constructor(props: any) {
         super(props);
         this.login = this.login.bind(this);
     }
@@ -39,9 +41,17 @@ class Home extends React.Component{
                 }
             }).then((response) => {
                 localStorageManager.saveUserToken(response.data);
-                console.log('user login successful');
+                console.log('user login successful', response.data);
+                try{
+                    this.props.history.push({
+                        pathname: '/userpage'
+                    })
+                } catch (e) {
+                    console.log(e.stack);
+                }
+
             }).catch((error) => {
-                toast.error(error.response.data)
+                console.log('error', error);
             });
         } else {
             toast.error("❕ Please complete required fields.");
@@ -53,7 +63,6 @@ class Home extends React.Component{
         if(token){
             console.log('token exists');
             return <Userpage/>;
-
         } else {
             console.log('token does NOT exist');
             return (
@@ -106,4 +115,4 @@ class Home extends React.Component{
 
 }
 
-export default Home;
+export default withRouter(Home);
