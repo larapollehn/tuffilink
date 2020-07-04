@@ -1,3 +1,5 @@
+import base64 from "../algorithms/Base64";
+
 class LocalStorage{
     private key = 'USER_TOKEN';
 
@@ -7,6 +9,12 @@ class LocalStorage{
 
     getUserToken(){
         return localStorage.getItem(this.key);
+    }
+
+    getUserInfoFromToken(){
+        const token = localStorage.getItem(this.key)!;
+        const tokenParts = token.split('.');
+        return JSON.parse(base64.decodeBase64(tokenParts[1]));
     }
 }
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Navbar from "react-bootstrap/Navbar";
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./home.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
