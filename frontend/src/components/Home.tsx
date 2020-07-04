@@ -41,10 +41,12 @@ class Home extends React.Component<any, any> {
                 }
             }).then((response) => {
                 localStorageManager.saveUserToken(response.data);
-                console.log('user login successful', response.data);
                 try{
                     this.props.history.push({
-                        pathname: '/userpage'
+                        pathname: '/userpage',
+                        state: {
+                            username: username
+                        }
                     })
                 } catch (e) {
                     console.log(e.stack);

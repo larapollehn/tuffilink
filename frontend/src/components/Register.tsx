@@ -39,6 +39,7 @@ class Register extends React.Component{
                 }
             }).then((response) => {
                 console.log('user registration successful');
+                toast.success('User was registered. Please confirm your account by clicking the link you will receive per mail.')
             }).catch((error) => {
                 if(error.response.status === 409){
                     toast.error('User already exists');
