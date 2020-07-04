@@ -13,6 +13,7 @@ import localStorageManager from "../models/LocalStorage";
 import log from "../utils/Logger";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {url} from "inspector";
 
 interface userPageProps {
 }
@@ -42,6 +43,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         this.getUrlCount = this.getUrlCount.bind(this);
         this.getUsersUrl = this.getUsersUrl.bind(this);
         this.processUrl = this.processUrl.bind(this);
+        this.deleteToken = this.deleteToken.bind(this);
     }
 
     async getUrlCount(userId: number, token: string) {
@@ -111,6 +113,34 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         }
 
     }
+
+    deleteToken(event: any){
+        log.debug('User wants to delete url');
+        const token = localStorageManager.getUserToken();
+        if(event.target.id && token){
+            const urlId = event.target.id;
+            axios({
+                method: 'DELETE',
+                url: `/api/url/${urlId}`,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(() => {
+                log.debug('User deleted an url, id:', urlId);
+                this.getUsersUrl(this.state.userId, token).then(() => {
+                    log.debug('New state of urls fetched');
+                }).catch(() => {
+                    log.debug('Urls could not be fetched');
+                })
+            }).catch((error) =>{
+               log.debug('Deleting url did not work', error);
+            })
+        } else {
+            log.debug('Id of url not identified from clicked button or token missing');
+            toast.error('That did not work. Refresh the page and please try again.')
+        }
+    }
+
     render() {
         console.log('render');
         return (
@@ -155,7 +185,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                                                 <br></br>
                                                 {url['originalurl']}
                                                 <br></br>
-                                                <button>Delete</button>
+                                                <button id={url['id']} onClick={this.deleteToken}>Delete</button>
                                             </ListGroup.Item>
                                         )
                                     }
