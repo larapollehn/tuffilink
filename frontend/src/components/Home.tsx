@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import localStorageManager from "../models/LocalStorage";
 import {Link} from "react-router-dom";
+import Userpage from "./Userpage";
 
 class Home extends React.Component{
     constructor(props: {}) {
@@ -48,41 +49,50 @@ class Home extends React.Component{
     }
 
     render(){
-        return(
-            <div id="home">
-                <Navbar  expand="lg">
-                    <Navbar.Brand href="#home">tinylink</Navbar.Brand>
-                </Navbar>
+        const token = localStorageManager.getUserToken();
+        if(token){
+            console.log('token exists');
+            return <Userpage/>;
 
-                <div id="homeScreen">
-                    <ToastContainer/>
-                    <p id="homeTitle">Create<br/> and share tinylinks</p>
-                    <Form>
-                        <Form.Group controlId="loginUsername">
-                            <Form.Label>Username *</Form.Label>
-                            <Form.Control type="text" placeholder="Enter username" />
-                        </Form.Group>
+        } else {
+            console.log('token does NOT exist');
+            return (
+                <div id="home">
+                    <Navbar expand="lg">
+                        <Navbar.Brand href="#home">tinylink</Navbar.Brand>
+                    </Navbar>
 
-                        <Form.Group controlId="loginPassword">
-                            <Form.Label>Password *</Form.Label>
-                            <Form.Control type="password" placeholder="Password" />
-                        </Form.Group>
-                    </Form>
-                    <div className="btnContainer">
-                        <Button variant="light" type="submit" id="loginBtn" onClick={this.login}>Login</Button>
+                    <div id="homeScreen">
+                        <ToastContainer/>
+                        <p id="homeTitle">Create<br/> and share tinylinks</p>
+                        <Form>
+                            <Form.Group controlId="loginUsername">
+                                <Form.Label>Username *</Form.Label>
+                                <Form.Control type="text" placeholder="Enter username"/>
+                            </Form.Group>
+
+                            <Form.Group controlId="loginPassword">
+                                <Form.Label>Password *</Form.Label>
+                                <Form.Control type="password" placeholder="Password"/>
+                            </Form.Group>
+                        </Form>
+                        <div className="btnContainer">
+                            <Button variant="light" type="submit" id="loginBtn" onClick={this.login}>Login</Button>
+                        </div>
+
+                        <Container className="optionsSection">
+                            <Row>
+                                <Col className="register"><Link to="/register" className="register">Register Now!</Link></Col>
+                                <Col className="resetPassword"><Link to="/passwordReset" className="register">Forgot
+                                    Password?</Link></Col>
+                            </Row>
+                        </Container>
                     </div>
 
-                    <Container className="optionsSection">
-                        <Row>
-                            <Col className="register"><Link to="/register" className="register">Register Now!</Link></Col>
-                            <Col className="resetPassword"><Link to="/passwordReset" className="register">Forgot Password?</Link></Col>
-                        </Row>
-                    </Container>
+                    <p>Scroll down to learn more!</p>
                 </div>
-
-                <p>Scroll down to learn more!</p>
-            </div>
-        )
+            )
+        }
     }
 
     componentDidMount() {
