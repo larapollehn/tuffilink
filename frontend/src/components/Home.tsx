@@ -16,6 +16,7 @@ import {withRouter} from 'react-router-dom';
 import localStorageManager from "../models/LocalStorage";
 import {Link} from "react-router-dom";
 import Userpage from "./Userpage";
+import log from "../utils/Logger";
 
 class Home extends React.Component<any, any> {
     constructor(props: any) {
@@ -23,12 +24,13 @@ class Home extends React.Component<any, any> {
         this.login = this.login.bind(this);
     }
 
-    login(){
+    login() {
         const usernameInput = document.getElementById('loginUsername') as HTMLInputElement;
         const username = usernameInput.value;
         const passwordInput = document.getElementById('loginPassword') as HTMLInputElement;
         const password = passwordInput.value;
-        if (username && password){
+        log.debug("User logging info:", username, password);
+        if (username && password) {
             axios({
                 url: "/api/user/login",
                 method: 'POST',
@@ -41,7 +43,8 @@ class Home extends React.Component<any, any> {
                 }
             }).then((response) => {
                 localStorageManager.saveUserToken(response.data);
-                try{
+                log.debug("Backend response with ", response.data);
+                try {
                     this.props.history.push({
                         pathname: '/userpage',
                         state: {
@@ -49,24 +52,24 @@ class Home extends React.Component<any, any> {
                         }
                     })
                 } catch (e) {
-                    console.log(e.stack);
+                    log.debug("Error redirecting to page 'userpage'", e.stack);
                 }
 
             }).catch((error) => {
-                console.log('error', error);
+                log.debug('error', error);
             });
         } else {
             toast.error("❕ Please complete required fields.");
         }
     }
 
-    render(){
+    render() {
         const token = localStorageManager.getUserToken();
-        if(token){
-            console.log('token exists');
+        if (token !== null) {
+            log.debug('token exists and can be trusted. Redirecting to user page now');
             return <Userpage/>;
         } else {
-            console.log('token does NOT exist');
+            log.debug('token does NOT exist');
             return (
                 <div id="home">
                     <Navbar expand="lg">
@@ -108,10 +111,10 @@ class Home extends React.Component<any, any> {
 
     componentDidMount() {
         const token = localStorageManager.getUserToken();
-        if(token){
-            console.log('token exists');
+        if (token !== null) {
+            log.debug('token exists');
         } else {
-            console.log('token does NOT exist');
+            log.debug('token does NOT exist');
         }
     }
 
