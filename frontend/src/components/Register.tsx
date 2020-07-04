@@ -40,7 +40,11 @@ class Register extends React.Component{
             }).then((response) => {
                 console.log('user registration successful');
             }).catch((error) => {
-                toast.error(error.response.data)
+                if(error.response.status === 409){
+                    toast.error('User already exists');
+                } else {
+                    toast.error('Something went wrong. Please try again.');
+                }
             });
         } else {
             toast.error("❕ Please complete required fields.");
@@ -56,7 +60,7 @@ class Register extends React.Component{
 
                 <div id="homeScreen">
                     <ToastContainer/>
-                    <p id="homeTitle">Create<br/> and share tinylinks</p>
+                    <p id="homeTitle">Start by<br/> registering a user account</p>
                     <Form>
                         <Form.Group controlId="registerEmail">
                             <Form.Label>Email *</Form.Label>
@@ -80,12 +84,10 @@ class Register extends React.Component{
                     <Container className="optionsSection">
                         <Row>
                             <Col className="register"><Link to="/" className="register">Login</Link></Col>
-                            <Col className="resetPassword"><a href="#" className="resetPassword">Forgot Password?</a></Col>
+                            <Col className="resetPassword"><Link to="/passwordReset" className="register">Forgot Password?</Link></Col>
                         </Row>
                     </Container>
                 </div>
-
-                <p>Scroll down to learn more!</p>
             </div>
         );
     }

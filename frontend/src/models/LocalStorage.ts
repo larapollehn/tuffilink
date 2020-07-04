@@ -6,10 +6,10 @@ class LocalStorage{
     }
 
     getUserToken(){
-        localStorage.getItem(this.key);
-        return 'token';
+        return localStorage.getItem(this.key);
     }
 }
 
 const localStorageManager = new LocalStorage();
+
 export default localStorageManager;

@@ -75,7 +75,7 @@ class Home extends React.Component{
                     <Container className="optionsSection">
                         <Row>
                             <Col className="register"><Link to="/register" className="register">Register Now!</Link></Col>
-                            <Col className="resetPassword"><a href="#" className="resetPassword">Forgot Password?</a></Col>
+                            <Col className="resetPassword"><Link to="/passwordReset" className="register">Forgot Password?</Link></Col>
                         </Row>
                     </Container>
                 </div>
@@ -83,6 +83,15 @@ class Home extends React.Component{
                 <p>Scroll down to learn more!</p>
             </div>
         )
+    }
+
+    componentDidMount() {
+        const token = localStorageManager.getUserToken();
+        if(token){
+            console.log('token exists');
+        } else {
+            console.log('token does NOT exist');
+        }
     }
 
 }
