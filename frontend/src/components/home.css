@@ -9,7 +9,7 @@
 }
 
 .navbar-light .navbar-brand {
-    color: #5af5b9 !important;
+    color: #5af5b9;
 }
 
 #homeScreen{
@@ -30,6 +30,29 @@ Form{
     color: whitesmoke;
 }
 
+.form-control{
+    height: calc(2em + .75rem + 2px);
+}
+
+.btn{
+    width: 120px;
+}
+.btnContainer{
+    text-align: center;
+}
+.optionsSection{
+    margin-top: 20px;
+}
+
+.register{
+    text-align: left;
+    color: whitesmoke;
+}
+
+.resetPassword{
+    text-align: right;
+    color: whitesmoke;
+}
 
 @media only screen and (min-device-width: 426px){
     #homeScreen{
@@ -37,6 +60,10 @@ Form{
     }
     Form{
         text-align: left;
+        width: 30%;
+        margin: 0 auto;
+    }
+    .optionsSection{
         width: 30%;
         margin: 0 auto;
     }
