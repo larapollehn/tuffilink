@@ -1,0 +1,43 @@
+#home{
+    height: 100vh;
+    width: 100%;
+    text-align: center;
+}
+
+.navbar-brand{
+    font-weight: bolder;
+}
+
+.navbar-light .navbar-brand {
+    color: #5af5b9 !important;
+}
+
+#homeScreen{
+    text-align: left;
+    padding: 4%;
+    height: 80%;
+    background: rgb(255,229,59);
+    background: linear-gradient(59deg, rgba(255,229,59,1) 0%, rgb(0, 255, 255) 100%);
+}
+
+#homeTitle{
+    font-size: 50px;
+    font-weight: bold;
+    color: whitesmoke;
+}
+
+Form{
+    color: whitesmoke;
+}
+
+
+@media only screen and (min-device-width: 426px){
+    #homeScreen{
+        text-align: center;
+    }
+    Form{
+        text-align: left;
+        width: 30%;
+        margin: 0 auto;
+    }
+}

@@ -1,20 +1,15 @@
 import React from 'react';
-import './App.css';
 import axios from 'axios';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+
+import Home from "./components/Home";
 
 class App extends React.Component<any, any> {
     render() {
         return (
             <Router basename={'/ui'}>
                 <Switch>
-                    <Route path={`${process.env.PUBLIC_URL}/`} exact>
-                        <div className="App">
-                            <header className="App-header">
-
-                            </header>
-                        </div>
-                    </Route>
+                    <Route path={`/`} exact><Home/></Route>
                 </Switch>
             </Router>
         );
