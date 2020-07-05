@@ -15,20 +15,20 @@ async function initialize() {
     const files = await fs.readdir('scripts');
     files.sort();
     sqlAccess.begin();
-    for (let i = 0; i < files.length; i++) {
-        const filePath = path.join("scripts", files[i]);
-        log.debug("Initialize current file ", filePath)
-        try {
+    try {
+        for (let i = 0; i < files.length; i++) {
+            const filePath = path.join("scripts", files[i]);
+            log.debug("Initialize current file ", filePath)
             const data = await fs.readFile(filePath, "utf-8");
             await sqlAccess.initialize(data);
             log.debug("Migrated successfully file ", filePath);
-        } catch (e) {
-            sqlAccess.rollback();
-            log.debug('Files could not be migrated', filePath);
-            throw e;
         }
+        sqlAccess.commit();
+    } catch (e) {
+        sqlAccess.rollback();
+        log.debug('Files could not be migrated', e.message);
+        throw e;
     }
-    sqlAccess.commit();
 }
 
 initialize();
