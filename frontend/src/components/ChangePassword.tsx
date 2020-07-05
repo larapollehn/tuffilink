@@ -59,7 +59,7 @@ class ChangePassword extends React.Component {
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="ml-auto">
                                 <Link className={"nav-link"} to="/changePassword">Change Password</Link>
-                                <Link className={"nav-link"} to="/">Logout</Link>
+                                <Link id={"logoutLink"} className={"nav-link"} to="/">Logout</Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
@@ -86,6 +86,14 @@ class ChangePassword extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    componentDidMount() {
+        let logoutLink = document.getElementById('logoutLink');
+        logoutLink?.addEventListener('click',() => {
+            log.debug('user logged out');
+            localStorageManager.deleteToken();
+        })
     }
 }
 

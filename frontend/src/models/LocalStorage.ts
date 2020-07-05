@@ -35,7 +35,10 @@ class LocalStorage{
         } else {
             return null;
         }
+    }
 
+    deleteToken(){
+        localStorage.removeItem(this.key);
     }
 }
 
