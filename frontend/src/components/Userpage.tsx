@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {Link} from "react-router-dom";
 import elephants from "./elephants_cropped.png";
 import Pagination from "react-bootstrap/Pagination";
-import {unwatchFile} from "fs";
+import {BorderWidth, Chart, Point, ChartColor} from 'chart.js';
 import Modal from "react-bootstrap/Modal";
 
 interface userPageProps {
@@ -70,11 +70,11 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             this.setState({
                 count: response.data
             })
-            let urls = Math.ceil(response.data/this.state.pageSize);
+            let urls = Math.ceil(response.data / this.state.pageSize);
             log.debug('urls', urls);
-            if (urls > 1){
+            if (urls > 1) {
                 let pagination = [];
-                for(let i = 0; i < urls; i ++){
+                for (let i = 0; i < urls; i++) {
                     pagination.push(i);
                 }
                 this.setState({
@@ -144,7 +144,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         }
     }
 
-    async fetchUrlData(token: string, pageNumber?: number){
+    async fetchUrlData(token: string, pageNumber?: number) {
         await this.getUrlCount(this.state.userId, token).then(() => {
             log.debug('New count of urls fetched');
         }).catch(() => {
@@ -171,8 +171,8 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                 }
             }).then(() => {
                 log.debug('User deleted an url, id:', urlId);
-                if ((this.state.count-1) % this.state.pageSize === 0 ){
-                    let nextPage = this.state.pageNumber -1;
+                if ((this.state.count - 1) % this.state.pageSize === 0) {
+                    let nextPage = this.state.pageNumber - 1;
                     this.setState({
                         pageNumber: nextPage
                     })
@@ -210,10 +210,10 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         }
     }
 
-    showStatistics(event: any){
+    showStatistics(event: any) {
         let urlId = event.target.id;
         let token = localStorageManager.getUserToken();
-        if(token && urlId){
+        if (token && urlId) {
             axios({
                 method: 'GET',
                 url: `/api/click?link_id=${urlId}&days=${this.state.days}`,
@@ -234,14 +234,56 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         }
     }
 
-    handleClose(){
+    handleClose() {
         this.setState({
             show: false
         });
     }
 
-    buildStatistics(data: []){
-
+    buildStatistics(data: []) {
+        console.log(data);
+        const mappingData = new Map();
+        for (let i = 0; i <= 7; i++) {
+            const currentDate = new Date();
+            currentDate.setHours(0);
+            currentDate.setMinutes(0);
+            currentDate.setSeconds(0);
+            currentDate.setMilliseconds(0);
+            currentDate.setDate(currentDate.getDate() - i);
+            mappingData.set(currentDate, 0);
+        }
+        for (let i = 0; i < data.length; i++) {
+            mappingData.set(new Date(data[i]["day"]), Number(data[i]["count"]));
+        }
+        const displayingData = new Map();
+        const keys = Array.from(mappingData.keys());
+        for (let i = 0; i < keys.length; i++) {
+            displayingData.set(`${keys[i].getDate()}.${keys[i].getMonth() + 1}`, mappingData.get(keys[i]));
+        }
+        console.log(displayingData);
+        // @ts-ignore
+        const ctx = document.getElementById('myChart').getContext('2d');
+        let myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Array.from(displayingData.keys()).reverse(),
+                datasets: [{
+                    label: 'Number of daily clicks',
+                    backgroundColor: 'rgb(226,109,90)',
+                    borderColor: 'rgb(226,109,90)',
+                    data: Array.from(displayingData.values()).reverse()
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }]
+                }
+            }
+        });
     }
 
     render() {
@@ -265,9 +307,11 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                     <Modal.Header closeButton>
                         <Modal.Title>Statistics for the last {this.state.days} days</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                    <Modal.Body>
+                        <canvas id="myChart"></canvas>
+                    </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleClose}>
+                        <Button variant="primary" onClick={this.handleClose}>
                             Close
                         </Button>
                     </Modal.Footer>
@@ -303,14 +347,14 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                                     <ListGroup.Item className={"statisticGroupItem"}>
                                         <button id={String(url['id'])} className={"deleteBtn"}
                                                 onClick={this.showStatistics}>
-                                        <svg width="1em" height="1em" viewBox="0 0 16 16"
-                                             className="bi bi-bar-chart-line" fill="currentColor"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd"
-                                                  d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5h-2v12h2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
-                                            <path fillRule="evenodd"
-                                                  d="M0 14.5a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/>
-                                        </svg>
+                                            <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                                 className="bi bi-bar-chart-line" fill="currentColor"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd"
+                                                      d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5h-2v12h2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
+                                                <path fillRule="evenodd"
+                                                      d="M0 14.5a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/>
+                                            </svg>
                                         </button>
                                     </ListGroup.Item>
                                     <ListGroup.Item className={"firstGroupItem"}><a className={"tinylinkItem"}
