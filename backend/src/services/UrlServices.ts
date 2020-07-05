@@ -1,6 +1,7 @@
 import sqlAccess from "../dataaccess/SQLAccess";
 import log from "../log/Logger";
 import {url} from "../algorithms/UrlShortener";
+import queryConvert from "../utils/QueryConverter";
 
 const createURL = async (expressRequest, expressResponse) => {
     const originalUrl = expressRequest.body['original_url'];
@@ -38,14 +39,7 @@ const getUsersUrls =  async (expressRequest, expressResponse) => {
         if (String(userid) === requestedUserId){
             log.debug('User is authorized to get urls');
             const getUsersUrlsResult = await sqlAccess.getUsersUrls(userid, pageNumber, pageSize);
-            const urls = [];
-            for (let i = 0; i < getUsersUrlsResult.rows.length; i++){
-                const url = {};
-                for(let j = 0; j < getUsersUrlsResult.fields.length; j++){
-                    url[getUsersUrlsResult.fields[j].name] = getUsersUrlsResult.rows[i][j];
-                }
-                urls.push(url);
-            }
+            const urls = queryConvert(getUsersUrlsResult.rows);
             expressResponse.status(200).send(urls);
         } else {
             expressResponse.status(403).send('User not authorized');
