@@ -27,6 +27,7 @@ interface userPageState {
     pageSize: number;
     pageNumber: number;
     token: string;
+    pagination: any
 }
 
 class Userpage extends React.Component<userPageProps, userPageState> {
@@ -39,7 +40,8 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             userName: '',
             pageNumber: 0,
             pageSize: 5,
-            token: ''
+            token: '',
+            pagination: []
         }
         this.getUrlCount = this.getUrlCount.bind(this);
         this.getUsersUrl = this.getUsersUrl.bind(this);
@@ -59,7 +61,22 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             this.setState({
                 count: response.data
             })
-            log.debug('Fetched Url count',response.data);
+            let urls = Math.ceil(response.data/this.state.pageSize);
+            log.debug('urls', urls);
+            if (urls > 1){
+                let pagination = [];
+                for(let i = 0; i < urls; i ++){
+                    pagination.push(i);
+                }
+                this.setState({
+                    pagination: pagination
+                })
+            } else {
+                this.setState({
+                    pagination: new Array(0)
+                })
+            }
+            log.debug('Fetched Url count', response.data);
             return;
         }).catch((error) => {
             log.debug('Url count could not be fetched');
@@ -112,6 +129,11 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                 }).catch(() => {
                     log.debug('Most recent urls could not be fetched');
                 });
+                this.getUrlCount(this.state.userId, token).then(() => {
+                    log.debug('New count of urls fetched');
+                }).catch(() => {
+                    log.debug('Url count could not be fetched');
+                });
             }).catch((error) => {
                 log.debug('Url could not be created.', error)
                 toast.error('This url can not be transformed into a tinylink. Please try again.')
@@ -141,7 +163,12 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                     log.debug('New state of urls fetched');
                 }).catch(() => {
                     log.debug('Urls could not be fetched');
-                })
+                });
+                this.getUrlCount(this.state.userId, token).then(() => {
+                    log.debug('New count of urls fetched');
+                }).catch(() => {
+                    log.debug('Url count could not be fetched');
+                });
             }).catch((error) => {
                 log.debug('Deleting url did not work', error.stack);
             })
@@ -151,10 +178,10 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         }
     }
 
-    changePage(event: any){
-        let page  = event.target.id;
+    changePage(event: any) {
+        let page = event.target.id;
         log.debug('User changed page', page);
-        if (page){
+        if (page) {
             this.setState({
                 pageNumber: page
             });
@@ -162,7 +189,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             log.debug('page number not valid');
         }
         let token = localStorageManager.getUserToken();
-        if (token){
+        if (token) {
             this.getUsersUrl(this.state.userId, token, page).then(() => {
                 log.debug('New state of urls fetched');
             }).catch(() => {
@@ -176,8 +203,6 @@ class Userpage extends React.Component<userPageProps, userPageState> {
     }
 
     render() {
-        let pagination = this.state.count > this.state.pageSize ? Array.from(Array(Math.ceil(this.state.count/this.state.pageSize)).keys()) : [];
-        log.debug('Array that will make pagination:', pagination);
         return (
             <div id="userpageContainer">
                 <ToastContainer/>
@@ -212,21 +237,25 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                     <Card className={"urlCard"}>
                         <Pagination>
                             {
-                                pagination.map( (page, i) =>
-                                    <Pagination.Item key={i} id={i} onClick={this.changePage}>{page+1}</Pagination.Item>
+                                this.state.pagination.map((page: number, i: number) =>
+                                    <Pagination.Item key={i} id={i}
+                                                     onClick={this.changePage}>{page + 1}</Pagination.Item>
                                 )
                             }
                         </Pagination>
                         {
                             this.state.urls.map((url: { shorturl: string, originalurl: string, visit_count: number, id: number }, i: number) =>
-                                    <ListGroup horizontal={"sm"} className="my-2" key={i}>
-                                        <ListGroup.Item className={"firstGroupItem"}><a className={"tinylinkItem"} href={`https://tinylink.larapollehn.de/${url['shorturl']}`}>https://tinylink.larapollehn.de/{url['shorturl']}</a></ListGroup.Item>
-                                        <ListGroup.Item className={"originalUrlItem"}> {url['originalurl']}</ListGroup.Item>
-                                        <ListGroup.Item className={"countGroupItem"}>
+                                <ListGroup horizontal={"sm"} className="my-2" key={i}>
+                                    <ListGroup.Item className={"firstGroupItem"}><a className={"tinylinkItem"}
+                                                                                    href={`https://tinylink.larapollehn.de/${url['shorturl']}`}>https://tinylink.larapollehn.de/{url['shorturl']}</a></ListGroup.Item>
+                                    <ListGroup.Item className={"originalUrlItem"}> {url['originalurl']}</ListGroup.Item>
+                                    <ListGroup.Item className={"countGroupItem"}>
                                             <span className="badge badge-primary">
                                             {url['visit_count']} click(s)</span>
-                                        </ListGroup.Item>
-                                        <ListGroup.Item className={"deleteGroupItem"}><button id={String(url['id'])} className={"deleteBtn"} onClick={this.deleteToken}>
+                                    </ListGroup.Item>
+                                    <ListGroup.Item className={"deleteGroupItem"}>
+                                        <button id={String(url['id'])} className={"deleteBtn"}
+                                                onClick={this.deleteToken}>
                                             <svg width="1em" height="1em" viewBox="0 0 16 16"
                                                  className="bi bi-trash-fill" fill="currentColor"
                                                  xmlns="http://www.w3.org/2000/svg">
@@ -234,9 +263,11 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                                                     d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                                 <path fillRule="evenodd"
                                                       d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                            </svg></button></ListGroup.Item>
-                                    </ListGroup>
-                                )
+                                            </svg>
+                                        </button>
+                                    </ListGroup.Item>
+                                </ListGroup>
+                            )
                         }
                     </Card>
                 </div>
@@ -270,7 +301,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         }
 
         let logoutLink = document.getElementById('logoutLink');
-        logoutLink?.addEventListener('click',() => {
+        logoutLink?.addEventListener('click', () => {
             log.debug('user logged out');
             localStorageManager.deleteToken();
         })
