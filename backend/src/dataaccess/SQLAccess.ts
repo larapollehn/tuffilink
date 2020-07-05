@@ -148,6 +148,15 @@ class SQLAccess {
         });
     }
 
+    getDailyClickCount(link_id) {
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'get-daily-click-count',
+            text: `SELECT clicked_at FROM clicks where link_id = $1 AND clicked_at  > current_date - interval $2 day;`,
+            values: [link_id]
+        });
+    }
+
     getUsersUrls(user_id, page_number, page_size){
         return this.pool.query({
             rowMode: 'array',
