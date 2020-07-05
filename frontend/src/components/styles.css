@@ -172,11 +172,21 @@ svg{
     .goBtn{
         width: 100%;
     }
+
+    .firstGroupItem{
+        width: 40%;
+    }
+
     .originalUrlItem{
-        max-width: 500px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        width: 30%;
+    }
+
+    .countGroupItem{
+        width: 20%;
+    }
+
+    .deleteGroupItem{
+        width: 10%;
     }
 }
 
@@ -186,14 +196,12 @@ svg{
         width: 50%;
         margin: 0 auto;
     }
-    .goBtn{
-        width: 100%;
-    }
 
+    .countGroupItem,  .deleteGroupItem{
+        text-align: right;
+    }
 }
 
 @media only screen and (min-device-width: 1875px){
-    .list-group{
-        margin: 0 auto;
-    }
+
 }

@@ -5,7 +5,6 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import axios from 'axios';
@@ -15,7 +14,6 @@ import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Link} from "react-router-dom";
 import elephants from "./elephants_cropped.png";
-import {EventHandler} from "react";
 
 interface userPageProps {
 }
@@ -124,6 +122,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         const token = localStorageManager.getUserToken();
         if (event.target.id && token) {
             const urlId = event.target.id;
+            log.debug('deleting url:', token, urlId);
             axios({
                 method: 'DELETE',
                 url: `/api/url/${urlId}`,
@@ -138,7 +137,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                     log.debug('Urls could not be fetched');
                 })
             }).catch((error) => {
-                log.debug('Deleting url did not work', error);
+                log.debug('Deleting url did not work', error.stack);
             })
         } else {
             log.debug('Id of url not identified from clicked button or token missing');
@@ -147,7 +146,6 @@ class Userpage extends React.Component<userPageProps, userPageState> {
     }
 
     render() {
-        console.log('render');
         return (
             <div id="userpageContainer">
                 <ToastContainer/>
@@ -183,10 +181,10 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                         {
                             this.state.urls.map((url: { shorturl: string, originalurl: string, visit_count: number, id: number }, i: number) =>
                                     <ListGroup horizontal={"sm"} className="my-2" key={i}>
-                                        <ListGroup.Item ><a className={"tinylinkItem"} href={`https://tinylink.larapollehn.de/${url['shorturl']}`}>https://tinylink.larapollehn.de/{url['shorturl']}</a></ListGroup.Item>
+                                        <ListGroup.Item className={"firstGroupItem"}><a className={"tinylinkItem"} href={`https://tinylink.larapollehn.de/${url['shorturl']}`}>https://tinylink.larapollehn.de/{url['shorturl']}</a></ListGroup.Item>
                                         <ListGroup.Item className={"originalUrlItem"}> {url['originalurl']}</ListGroup.Item>
-                                        <ListGroup.Item>clicked: {url['visit_count']}</ListGroup.Item>
-                                        <ListGroup.Item><button id={String(url['id'])} className={"deleteBtn"} onClick={this.deleteToken}>
+                                        <ListGroup.Item className={"countGroupItem"}>clicked: {url['visit_count']}</ListGroup.Item>
+                                        <ListGroup.Item className={"deleteGroupItem"}><button id={String(url['id'])} className={"deleteBtn"} onClick={this.deleteToken}>
                                             <svg width="1em" height="1em" viewBox="0 0 16 16"
                                                  className="bi bi-trash-fill" fill="currentColor"
                                                  xmlns="http://www.w3.org/2000/svg">
