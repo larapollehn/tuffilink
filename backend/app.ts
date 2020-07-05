@@ -14,8 +14,8 @@ async function initialize() {
     log.debug("Start initializing database")
     const files = await fs.readdir('scripts');
     files.sort();
-    sqlAccess.begin();
     try {
+        sqlAccess.begin();
         for (let i = 0; i < files.length; i++) {
             const filePath = path.join("scripts", files[i]);
             log.debug("Initialize current file ", filePath)

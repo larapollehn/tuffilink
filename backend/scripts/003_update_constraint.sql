@@ -25,3 +25,11 @@ ADD CONSTRAINT clicks_link_id_fkey
    FOREIGN KEY (link_id)
    REFERENCES links(id)
    ON DELETE CASCADE;
+
+ALTER TABLE clicks ALTER COLUMN link_id SET NOT NULL;
+
+ALTER TABLE links ALTER COLUMN user_id SET NOT NULL;
+
+ALTER TABLE confirm_account_tokens ALTER COLUMN user_id SET NOT NULL;
+
+ALTER TABLE forgot_password_tokens ALTER COLUMN user_id SET NOT NULL;
