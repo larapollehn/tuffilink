@@ -68,7 +68,7 @@ Form{
     border-color: #E26D5A;
 }
 
-.homeBtn:hover, .goBtn:hover{
+.homeBtn:hover:active:focus, .goBtn:hover:active:focus, .btn-light:hover:active:focus{
     background-color: #E26D5A;
     color: whitesmoke;
     font-weight: bold;
@@ -151,6 +151,15 @@ Form{
 
 svg{
    pointer-events: none;
+}
+
+.pagination{
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.page-link{
+    color: #5e79d2;
 }
 
 @media only screen and (min-device-width: 426px){
