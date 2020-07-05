@@ -8,6 +8,11 @@ const redirectToOriginalUrl = async (expressRequest, expressResponse) => {
     log.debug("Short url", url);
     try{
         const getOriginalUrlResult = await sqlAccess.getOriginalUrl(url);
+        try {
+            await sqlAccess.createClick(url);
+        }catch (e) {
+            log.error("Error creating a click for url", url);
+        }
         log.debug("Original url", getOriginalUrlResult.rows[0][0]);
         expressResponse.redirect(getOriginalUrlResult.rows[0][0]);
     } catch (e) {

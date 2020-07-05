@@ -26,6 +26,12 @@ visit_count BIGINT DEFAULT 0 NOT NULL,
 user_id BIGINT REFERENCES users(id)
 );
 
+CREATE TABLE IF NOT EXISTS clicks (
+id SERIAL PRIMARY KEY,
+link_id BIGINT REFERENCES links(id),
+clicked_at TIMESTAMP not null DEFAULT NOW()
+);
+
 CREATE UNIQUE INDEX IF NOT EXISTS username_idx ON users (username);
 
 CREATE UNIQUE INDEX IF NOT EXISTS forgot_password_token_idx ON forgot_password_tokens (token);
