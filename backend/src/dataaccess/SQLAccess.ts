@@ -139,6 +139,15 @@ class SQLAccess {
         });
     }
 
+    createClick(shortUrl){
+        return this.pool.query({
+            rowMode: 'array',
+            name: 'create-click',
+            text: 'INSERT INTO clicks(link_id) values((SELECT id from links where shorturl = $1));',
+            values: [shortUrl]
+        });
+    }
+
     getUsersUrls(user_id, page_number, page_size){
         return this.pool.query({
             rowMode: 'array',
