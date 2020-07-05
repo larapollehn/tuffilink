@@ -9,7 +9,7 @@ const getClickStatistic = async (expressRequest, expressResponse) => {
     const link_id = expressRequest.query["link_id"];
     if(link_id && typeof link_id === "string"){
         const result = await sqlAccess.getDailyClickCount(link_id);
-        const queryResult = queryConvert(result.rows);
+        const queryResult = queryConvert(result);
         expressResponse.status(200).send(queryResult);
     }else{
         expressResponse.status(400).send("Please include the following queries: link_id");
