@@ -64,7 +64,7 @@ Form{
     background-color: #E26D5A;
     color: whitesmoke;
     font-weight: bold;
-    min-width: 100px;
+    width: 100%;
     border-color: #E26D5A;
 }
 
@@ -95,8 +95,11 @@ Form{
     color: whitesmoke;
 }
 
-
 /** USERPAGE **/
+
+.userpageNav{
+    text-align: center;
+}
 
 .shortUserPageContainer{
     padding-left: 4%;

@@ -14,6 +14,7 @@ import log from "../utils/Logger";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Link} from "react-router-dom";
+import elephants from "./elephants_cropped.png";
 
 interface userPageProps {
 }
@@ -146,17 +147,21 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         return (
             <div id="userpageContainer">
                 <ToastContainer/>
-                <Navbar expand="lg">
-                    <Navbar.Brand><Link className={"appTitle"} to="/">tuffilink</Link></Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ml-auto">
-                            <Nav.Link href="#home">How to</Nav.Link>
-                            <Link className={"nav-link"} to="/changePassword">Change Password</Link>
-                            <Nav.Link href="#home">Logout</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
+                <div className="userpageNav">
+                    <Navbar expand="lg">
+                        <Navbar.Brand><Link className={"appTitle"} to="/">tuffilink</Link></Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="ml-auto">
+                                <Nav.Link href="#home">How to</Nav.Link>
+                                <Link className={"nav-link"} to="/changePassword">Change Password</Link>
+                                <Nav.Link href="#home">Logout</Nav.Link>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
+                </div>
+
+                <img className={"elephantLogo"} src={elephants} alt="elephant-logo"/>
                 <div className="shortUserPageContainer">
                     <p id="homeTitle">Shorten urls now. Use and share whenever!</p>
                 </div>
@@ -180,6 +185,8 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                                            target="_blank">https://tinylink.larapollehn.de/{url['shorturl']}</a>
                                         <br></br>
                                         {url['originalurl']}
+                                        <br></br>
+                                        {url['visit_count']}
                                         <br></br>
                                         <button id={url['id']} onClick={this.deleteToken}>Delete</button>
                                     </ListGroup.Item>
