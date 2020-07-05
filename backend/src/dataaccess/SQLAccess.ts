@@ -148,12 +148,15 @@ class SQLAccess {
         });
     }
 
-    getDailyClickCount(link_id) {
+    getDailyClickCount(link_id, days) {
         return this.pool.query({
             rowMode: 'array',
             name: 'get-daily-click-count',
-            text: `SELECT clicked_at FROM clicks where link_id = $1 AND clicked_at  > current_date - interval $2 day;`,
-            values: [link_id]
+            text: `SELECT date_trunc('day', clicked_at) "day", count(clicked_at) 
+            FROM clicks 
+            WHERE link_id = $1 AND clicked_at >= to_timestamp(CAST($2 as bigint)/1000)::date
+            group by 1 order by 1;`,
+            values: [link_id, Date.now() - days * 1000 * 60 * 60 * 24]
         });
     }
 
