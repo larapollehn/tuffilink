@@ -30,7 +30,7 @@ class EmailAccess{
             from: SENDER,
             to: receiver,
             subject: 'Reset your password',
-            text: `Please click on the following link to reset your password:  http://localhost/forgotpassword/?token=${token}`
+            text: `Please click on the following link to reset your password:  http://localhost:3000/forgotpassword?token=${token}`
         });
     }
 }
