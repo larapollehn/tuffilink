@@ -167,11 +167,8 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                     this.setState({
                         pageNumber: nextPage
                     })
-                    console.log('yas', this.state.pageNumber, nextPage);
-                    this.fetchUrlData(token,);
-                } else {
-                    this.fetchUrlData(token);
                 }
+                this.fetchUrlData(token);
             }).catch((error) => {
                 log.debug('Deleting url did not work', error.stack);
             })
