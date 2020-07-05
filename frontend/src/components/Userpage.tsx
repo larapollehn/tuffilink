@@ -13,7 +13,7 @@ import localStorageManager from "../models/LocalStorage";
 import log from "../utils/Logger";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {url} from "inspector";
+import {Link} from "react-router-dom";
 
 interface userPageProps {
 }
@@ -147,12 +147,12 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             <div id="userpageContainer">
                 <ToastContainer/>
                 <Navbar expand="lg">
-                    <Navbar.Brand href="#home">tinylink</Navbar.Brand>
+                    <Navbar.Brand href="/">tinylink</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
                             <Nav.Link href="#home">How to</Nav.Link>
-                            <Nav.Link href="#link">Change Password</Nav.Link>
+                            <Link className={"nav-link"} to="/changePassword">Change Password</Link>
                             <Nav.Link href="#home">Logout</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
