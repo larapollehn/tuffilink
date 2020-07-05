@@ -86,6 +86,7 @@ class SQLAccess {
     }
 
     deleteUsedResetPasswordToken(resetToken){
+        log.debug("Deleting used reset password token for token", resetToken)
         return this.pool.query({
             rowMode: 'array',
             name: 'delete-used-reset-token',
