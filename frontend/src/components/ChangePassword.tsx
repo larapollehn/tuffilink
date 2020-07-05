@@ -9,6 +9,9 @@ import Button from "react-bootstrap/Button";
 import log from "../utils/Logger";
 import localStorageManager from "../models/LocalStorage";
 import axios from "axios";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 
 class ChangePassword extends React.Component {
     constructor(props: {}) {
@@ -41,7 +44,7 @@ class ChangePassword extends React.Component {
             })
         } else {
             log.debug('New Password or token missing');
-            toast.error('❕ Please complete required fields.');
+            toast.error('Please complete required fields.');
         }
     }
 
@@ -49,19 +52,21 @@ class ChangePassword extends React.Component {
         return (
             <div id="changePassword">
                 <ToastContainer/>
-                <Navbar expand="lg">
-                    <Navbar.Brand href="#home">tinylink</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ml-auto">
-                            <Nav.Link href="#home">How to</Nav.Link>
-                            <Link className={"nav-link"} to="/changePassword">Change Password</Link>
-                            <Nav.Link href="#home">Logout</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
+                <div className="userpageNav">
+                    <Navbar expand="lg">
+                        <Navbar.Brand><Link className={"appTitle"} to="/">tuffilink</Link></Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="ml-auto">
+                                <Link className={"nav-link"} to="/changePassword">Change Password</Link>
+                                <Link className={"nav-link"} to="/">Logout</Link>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
+                </div>
                 <div id="homeScreen">
-                    <p id="homeTitle">Want to change your Password?<br/>Go ahead.</p>
+                    <p id="homeTitle">Want to change your Password?</p>
+                    <p className="subTitle">Just enter a new password and we'll do the rest.</p>
                     <Form>
                         <Form.Group controlId="changePasswordInput">
                             <Form.Label>New Password *</Form.Label>
@@ -69,9 +74,14 @@ class ChangePassword extends React.Component {
                         </Form.Group>
                     </Form>
                     <div className="btnContainer">
-                        <Button variant="light" type="submit" id="loginBtn" onClick={this.changePassword}>Change
+                        <Button variant="light" type="submit" id="loginBtn"  className="homeBtn"  onClick={this.changePassword}>Change
                             Password</Button>
                     </div>
+                    <Container className="optionsSection">
+                        <Row>
+                            <Col className="register"><Link to="/userpage" className="pageDirection">Back to Home</Link></Col>
+                        </Row>
+                    </Container>
 
                 </div>
             </div>

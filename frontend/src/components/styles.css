@@ -85,6 +85,10 @@ Form{
     color: #E26D5A;
 }
 
+.col{
+    padding: 0;
+}
+
 .register{
     text-align: left;
     color: whitesmoke;

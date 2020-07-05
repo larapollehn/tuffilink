@@ -114,6 +114,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             })
         } else {
             log.debug('Token or url is missing');
+            toast.error('Please enter a url we can shorten for you.');
         }
 
     }
@@ -156,9 +157,8 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="ml-auto">
-                                <Nav.Link href="#home">How to</Nav.Link>
                                 <Link className={"nav-link"} to="/changePassword">Change Password</Link>
-                                <Nav.Link href="#home">Logout</Nav.Link>
+                                <Link className={"nav-link"} to="/">Logout</Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
@@ -183,7 +183,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                         {
                             this.state.urls.map((url: { shorturl: string, originalurl: string, visit_count: number, id: number }, i: number) =>
                                     <ListGroup horizontal={"sm"} className="my-2" key={i}>
-                                        <ListGroup.Item className={"tinylinkItem"}>https://tinylink.larapollehn.de/{url['shorturl']}</ListGroup.Item>
+                                        <ListGroup.Item ><a className={"tinylinkItem"} href={`https://tinylink.larapollehn.de/${url['shorturl']}`}>https://tinylink.larapollehn.de/{url['shorturl']}</a></ListGroup.Item>
                                         <ListGroup.Item className={"originalUrlItem"}> {url['originalurl']}</ListGroup.Item>
                                         <ListGroup.Item>clicked: {url['visit_count']}</ListGroup.Item>
                                         <ListGroup.Item><button id={String(url['id'])} className={"deleteBtn"} onClick={this.deleteToken}>
