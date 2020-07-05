@@ -84,7 +84,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
     }
 
     async getUsersUrl(userId: number, token: string, pageNumber?: number) {
-        log.debug(this.state.pageNumber);
+        log.debug(this.state.pageNumber, pageNumber);
         axios({
             method: 'GET',
             url: `/api/url?user_id=${userId}&page_size=${this.state.pageSize}&page_number=${pageNumber || this.state.pageNumber}`,
@@ -124,16 +124,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             }).then((response) => {
                 log.debug('Url successfully created');
                 toast.success('We created a tinylink for you.')
-                this.getUsersUrl(this.state.userId, token).then(() => {
-                    log.debug('Urls were fetched after adding one');
-                }).catch(() => {
-                    log.debug('Most recent urls could not be fetched');
-                });
-                this.getUrlCount(this.state.userId, token).then(() => {
-                    log.debug('New count of urls fetched');
-                }).catch(() => {
-                    log.debug('Url count could not be fetched');
-                });
+                this.fetchUrlData(token);
             }).catch((error) => {
                 log.debug('Url could not be created.', error)
                 toast.error('This url can not be transformed into a tinylink. Please try again.')
@@ -142,7 +133,19 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             log.debug('Token or url is missing');
             toast.error('Please enter a url we can shorten for you.');
         }
+    }
 
+    async fetchUrlData(token: string, pageNumber?: number){
+        await this.getUrlCount(this.state.userId, token).then(() => {
+            log.debug('New count of urls fetched');
+        }).catch(() => {
+            log.debug('Url count could not be fetched');
+        });
+        this.getUsersUrl(this.state.userId, token, pageNumber).then(() => {
+            log.debug('Urls were fetched after adding one');
+        }).catch(() => {
+            log.debug('Most recent urls could not be fetched');
+        });
     }
 
     deleteToken(event: any) {
@@ -159,16 +162,16 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                 }
             }).then(() => {
                 log.debug('User deleted an url, id:', urlId);
-                this.getUsersUrl(this.state.userId, token).then(() => {
-                    log.debug('New state of urls fetched');
-                }).catch(() => {
-                    log.debug('Urls could not be fetched');
-                });
-                this.getUrlCount(this.state.userId, token).then(() => {
-                    log.debug('New count of urls fetched');
-                }).catch(() => {
-                    log.debug('Url count could not be fetched');
-                });
+                if ((this.state.count-1) % this.state.pageSize === 0 ){
+                    let nextPage = this.state.pageNumber -1;
+                    this.setState({
+                        pageNumber: nextPage
+                    })
+                    console.log('yas', this.state.pageNumber, nextPage);
+                    this.fetchUrlData(token,);
+                } else {
+                    this.fetchUrlData(token);
+                }
             }).catch((error) => {
                 log.debug('Deleting url did not work', error.stack);
             })
