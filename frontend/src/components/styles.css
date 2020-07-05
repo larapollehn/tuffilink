@@ -30,6 +30,13 @@
     margin-bottom: 20px;
 }
 
+.sadElephantLogo{
+    width: 60%;
+    height: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 #homeTitle{
     font-size: 40px;
     line-height: 1.2;
@@ -162,6 +169,14 @@ svg{
     color: #5e79d2;
 }
 
+#page404{
+    text-align: center;
+}
+
+.notFoundTitle{
+    text-align: center;
+}
+
 @media only screen and (min-device-width: 426px){
     #homeScreen, #userpageContainer{
         text-align: center;
@@ -201,13 +216,18 @@ svg{
 
 @media only screen and (min-device-width: 769px){
 
-    .optionsSection, .subTitle, .homeBtn, Form, .urlCard, .userpageNav {
+    .optionsSection, .subTitle, .homeBtn, Form, .urlCard, .userpageNav, #page404 {
         width: 50%;
         margin: 0 auto;
     }
 
     .countGroupItem,  .deleteGroupItem{
         text-align: right;
+    }
+
+    .sadElephantLogo{
+        width: 20%;
+        height: auto;
     }
 }
 

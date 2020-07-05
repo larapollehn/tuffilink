@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import PasswordReset from "./components/PasswordReset";
 import Userpage from "./components/Userpage";
 import ChangePassword from "./components/ChangePassword";
+import Page404 from "./components/Page404";
 
 class App extends React.Component<any, any> {
     render() {
@@ -13,10 +14,11 @@ class App extends React.Component<any, any> {
             <Router basename={'/ui'}>
                 <Switch>
                     <Route path={`/`} exact><Home/></Route>
-                    <Route path={`/register`} exact><Register/></Route>
-                    <Route path={`/passwordReset`} exact><PasswordReset/></Route>
-                    <Route path={`/userpage`} exact><Userpage/></Route>
-                    <Route path={`/changePassword`} exact><ChangePassword/></Route>
+                    <Route path={`/register`} ><Register/></Route>
+                    <Route path={`/passwordReset`} ><PasswordReset/></Route>
+                    <Route path={`/userpage`} ><Userpage/></Route>
+                    <Route path={`/changePassword`} ><ChangePassword/></Route>
+                    <Route path={`/404`} exact><Page404/></Route>
                 </Switch>
             </Router>
         );
