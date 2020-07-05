@@ -152,7 +152,8 @@ class SQLAccess {
         return this.pool.query({
             rowMode: 'array',
             name: 'get-daily-click-count',
-            text: `SELECT clicked_at FROM clicks where link_id = $1 AND clicked_at  > current_date - interval $2 day;`,
+            text: `SELECT date_trunc('day', clicked_at) "day", count(clicked_at) FROM clicks WHERE link_id = $1 AND clicked_at >= DATE(NOW()) - INTERVAL '30 DAYS' 
+group by 1 order by 1;`,
             values: [link_id]
         });
     }
