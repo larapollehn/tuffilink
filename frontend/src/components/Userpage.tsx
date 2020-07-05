@@ -61,7 +61,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         })
     }
 
-    async getUsersUrl(userId: number, token: string){
+    async getUsersUrl(userId: number, token: string) {
         axios({
             method: 'GET',
             url: `/api/url?user_id=${userId}&page_size=${this.state.pageSize}&page_number=${this.state.pageNumber}`,
@@ -81,16 +81,16 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         });
     }
 
-    processUrl(){
+    processUrl() {
         const urlInput = document.getElementById('longUrl') as HTMLInputElement;
         const longUrl = urlInput.value;
         const token = localStorageManager.getUserToken();
         log.debug('The Following url was requested to be shortened:', longUrl);
-        if(longUrl && token){
+        if (longUrl && token) {
             axios({
                 method: 'POST',
                 url: '/api/url',
-                data:{
+                data: {
                     "original_url": longUrl
                 },
                 headers: {
@@ -114,10 +114,10 @@ class Userpage extends React.Component<userPageProps, userPageState> {
 
     }
 
-    deleteToken(event: any){
+    deleteToken(event: any) {
         log.debug('User wants to delete url');
         const token = localStorageManager.getUserToken();
-        if(event.target.id && token){
+        if (event.target.id && token) {
             const urlId = event.target.id;
             axios({
                 method: 'DELETE',
@@ -132,8 +132,8 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                 }).catch(() => {
                     log.debug('Urls could not be fetched');
                 })
-            }).catch((error) =>{
-               log.debug('Deleting url did not work', error);
+            }).catch((error) => {
+                log.debug('Deleting url did not work', error);
             })
         } else {
             log.debug('Id of url not identified from clicked button or token missing');
@@ -169,30 +169,22 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                             Go
                         </Button>
                     </div>
-                    <Accordion>
-                        <Card>
-                            <Card.Header>
-                                <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                    Show me my tinylinks
-                                </Accordion.Toggle>
-                            </Card.Header>
-                            <Accordion.Collapse eventKey="0">
-                                <ListGroup variant="flush">
-                                    {
-                                        this.state.urls.map((url, i) =>
-                                            <ListGroup.Item key={i}>
-                                                <a href={`https://tinylink.larapollehn.de/${url['shorturl']}`} target="_blank">https://tinylink.larapollehn.de/{url['shorturl']}</a>
-                                                <br></br>
-                                                {url['originalurl']}
-                                                <br></br>
-                                                <button id={url['id']} onClick={this.deleteToken}>Delete</button>
-                                            </ListGroup.Item>
-                                        )
-                                    }
-                                </ListGroup>
-                            </Accordion.Collapse>
-                        </Card>
-                    </Accordion>
+                    <Card>
+                        <ListGroup variant="flush">
+                            {
+                                this.state.urls.map((url, i) =>
+                                    <ListGroup.Item key={i}>
+                                        <a href={`https://tinylink.larapollehn.de/${url['shorturl']}`}
+                                           target="_blank">https://tinylink.larapollehn.de/{url['shorturl']}</a>
+                                        <br></br>
+                                        {url['originalurl']}
+                                        <br></br>
+                                        <button id={url['id']} onClick={this.deleteToken}>Delete</button>
+                                    </ListGroup.Item>
+                                )
+                            }
+                        </ListGroup>
+                    </Card>
                 </div>
             </div>
         );

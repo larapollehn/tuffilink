@@ -1,3 +1,7 @@
+*{
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+}
 #home{
     height: 100vh;
     width: 100%;
@@ -6,42 +10,75 @@
 
 .navbar-brand{
     font-weight: bolder;
+    font-size: 30px;
 }
 
 .navbar-light .navbar-brand {
-    color: #5af5b9;
+    color: #E26D5A;
 }
 
 #homeScreen{
     text-align: left;
-    padding: 4%;
+    padding-left: 4%;
+    padding-right: 4%;
     height: 80%;
-    background: rgb(255,229,59);
-    background: linear-gradient(59deg, rgba(255,229,59,1) 0%, rgb(0, 255, 255) 100%);
+}
+
+.elephantLogo{
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
 }
 
 #homeTitle{
-    font-size: 50px;
+    font-size: 40px;
+    line-height: 1.2;
+    color: #2a2929;
+    margin-bottom:5px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bolder;
+}
+.appTitle{
+    color: #E26D5A;
+    font-size: 40px;
+    font-weight: bolder;
+    margin-bottom: 0;
+    text-align: left;
+    padding-left: 4%;
+}
+
+.subTitle{
+    color: #585757;
     font-weight: bold;
-    color: whitesmoke;
 }
 
 Form{
+    margin-top: 20px;
     color: whitesmoke;
+    font-weight: bold;
 }
 
 .form-control{
     height: calc(2em + .75rem + 2px);
 }
 
-.btn{
-    width: 200px;
+.homeBtn{
+    background-color: #E26D5A;
+    color: whitesmoke;
+    font-weight: bold;
+    min-width: 100px;
 }
+
+
 .btnContainer{
     text-align: center;
 }
 .optionsSection{
-    margin-top: 20px;
+    margin-top: 10px;
+}
+
+.pageDirection{
+    color: #E26D5A;
 }
 
 .register{

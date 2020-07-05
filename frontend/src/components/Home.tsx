@@ -17,6 +17,7 @@ import localStorageManager from "../models/LocalStorage";
 import {Link} from "react-router-dom";
 import Userpage from "./Userpage";
 import log from "../utils/Logger";
+import elephants from "./elephants_cropped.png";
 
 class Home extends React.Component<any, any> {
     constructor(props: any) {
@@ -72,38 +73,34 @@ class Home extends React.Component<any, any> {
             log.debug('token does NOT exist');
             return (
                 <div id="home">
-                    <Navbar expand="lg">
-                        <Navbar.Brand href="#home">tinylink</Navbar.Brand>
-                    </Navbar>
+                    <p className={"appTitle"}>tuffilink</p>
 
                     <div id="homeScreen">
                         <ToastContainer/>
-                        <p id="homeTitle">Create<br/> and share tinylinks</p>
+                        <img className={"elephantLogo"} src={elephants} alt="elephant-logo"/>
+                        <p id="homeTitle">Create And Share Tinylinks</p>
+                        <p className="subTitle">Save time and confusion by using shortened links, reusable and easy to remember.</p>
                         <Form>
                             <Form.Group controlId="loginUsername">
-                                <Form.Label>Username *</Form.Label>
-                                <Form.Control type="text" placeholder="Enter username"/>
+                                <Form.Control type="text" placeholder="Username *"/>
                             </Form.Group>
 
                             <Form.Group controlId="loginPassword">
-                                <Form.Label>Password *</Form.Label>
-                                <Form.Control type="password" placeholder="Password"/>
+                                <Form.Control type="password" placeholder="Password *"/>
                             </Form.Group>
                         </Form>
                         <div className="btnContainer">
-                            <Button variant="light" type="submit" id="loginBtn" onClick={this.login}>Login</Button>
+                            <Button variant="light" type="submit" id="loginBtn" className="homeBtn" onClick={this.login}>Login</Button>
                         </div>
 
                         <Container className="optionsSection">
                             <Row>
-                                <Col className="register"><Link to="/register" className="register">Register Now!</Link></Col>
-                                <Col className="resetPassword"><Link to="/passwordReset" className="register">Forgot
+                                <Col className="register"><Link to="/register" className="pageDirection">Register Now!</Link></Col>
+                                <Col className="resetPassword"><Link to="/passwordReset" className="pageDirection">Forgot
                                     Password?</Link></Col>
                             </Row>
                         </Container>
                     </div>
-
-                    <p>Scroll down to learn more!</p>
                 </div>
             )
         }

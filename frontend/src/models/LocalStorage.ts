@@ -20,17 +20,22 @@ class LocalStorage{
 
     getUserInfoFromToken(){
         const token = localStorage.getItem(this.key)!;
-        const tokenParts = token.split('.');
-        const payloadObject =  JSON.parse(base64.decodeBase64(tokenParts[1]));
-        log.debug("Following JWT payload object was retrieved from localStorage:", payloadObject);
-        if(payloadObject["exp"] && payloadObject["exp"] < Date.now()){
-            log.debug("JWT Payload can not be used anymore and was expired at ", payloadObject["exp"]);
-            localStorage.removeItem(this.key);
+        if(token){
+            const tokenParts = token.split('.');
+            const payloadObject =  JSON.parse(base64.decodeBase64(tokenParts[1]));
+            log.debug("Following JWT payload object was retrieved from localStorage:", payloadObject);
+            if(payloadObject["exp"] && payloadObject["exp"] < Date.now()){
+                log.debug("JWT Payload can not be used anymore and was expired at ", payloadObject["exp"]);
+                localStorage.removeItem(this.key);
+                return null;
+            }else {
+                log.debug("JWT payload is still valid and can be used");
+                return payloadObject;
+            }
+        } else {
             return null;
-        }else {
-            log.debug("JWT payload is still valid and can be used");
-            return payloadObject;
         }
+
     }
 }
 
