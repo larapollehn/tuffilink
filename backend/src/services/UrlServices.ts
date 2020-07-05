@@ -39,7 +39,7 @@ const getUsersUrls =  async (expressRequest, expressResponse) => {
         if (String(userid) === requestedUserId){
             log.debug('User is authorized to get urls');
             const getUsersUrlsResult = await sqlAccess.getUsersUrls(userid, pageNumber, pageSize);
-            const urls = queryConvert(getUsersUrlsResult.rows);
+            const urls = queryConvert(getUsersUrlsResult);
             expressResponse.status(200).send(urls);
         } else {
             expressResponse.status(403).send('User not authorized');
