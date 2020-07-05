@@ -5,13 +5,14 @@ import log from "../log/Logger";
 
 const redirectToOriginalUrl = async (expressRequest, expressResponse) => {
     const url = expressRequest.params["url"];
-    log.debug("Short url", url);
+    log.debug("Original url requested for short url", url);
     try{
         const getOriginalUrlResult = await sqlAccess.getOriginalUrl(url);
         try {
+            log.debug("Creating new click for short url", url);
             await sqlAccess.createClick(url);
         }catch (e) {
-            log.error("Error creating a click for url", url);
+            log.error("Error creating a click for short url", url);
         }
         log.debug("Original url", getOriginalUrlResult.rows[0][0]);
         expressResponse.redirect(getOriginalUrlResult.rows[0][0]);
