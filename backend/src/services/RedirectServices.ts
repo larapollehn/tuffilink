@@ -14,8 +14,13 @@ const redirectToOriginalUrl = async (expressRequest, expressResponse) => {
         } catch (e) {
             log.error("Error creating a click for short url", url);
         }
-        log.debug("Original url", getOriginalUrlResult.rows[0][0]);
-        expressResponse.redirect(getOriginalUrlResult.rows[0][0]);
+        log.debug("Results of redirecting", getOriginalUrlResult.rows);
+        if(getOriginalUrlResult.rows.length === 1) {
+            log.debug("Original url", getOriginalUrlResult.rows[0][0]);
+            expressResponse.redirect(getOriginalUrlResult.rows[0][0]);
+        }else {
+            expressResponse.redirect("https://tinylink.larapollehn.de/ui/404");
+        }
     } catch (e) {
         log.debug(e.stack);
         expressResponse.redirect("https://tinylink.larapollehn.de/ui/404");
