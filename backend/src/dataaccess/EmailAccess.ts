@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const MAILPWD = process.env.MAILPWD;
 const SENDER = process.env.SENDER;
 const HOST = process.env.HOST;
+const FRONTEND_LINK = process.env.FRONTEND_LINK;
 
 class EmailAccess{
     private transporter = nodemailer.createTransport({
@@ -20,7 +21,7 @@ class EmailAccess{
             from: SENDER,
             to: receiver,
             subject: 'Confirm user account',
-            text: `Please click on the following link to confirm your registered user account: https://tinylink.larapollehn.de/#/confirmaccount/?token=${confirmToken}`
+            text: `Please click on the following link to confirm your registered user account: ${FRONTEND_LINK}/confirmaccount/?token=${confirmToken}`
         });
     }
 
@@ -29,7 +30,7 @@ class EmailAccess{
             from: SENDER,
             to: receiver,
             subject: 'Reset your password',
-            text: `Please click on the following link to reset your password:  https://tinylink.larapollehn.de/#/forgotpassword/?token=${token}`
+            text: `Please click on the following link to reset your password:  ${FRONTEND_LINK}/ui/forgotpassword/?token=${token}`
         });
     }
 }
