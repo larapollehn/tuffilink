@@ -21,7 +21,7 @@ class EmailAccess{
             from: SENDER,
             to: receiver,
             subject: 'Confirm user account',
-            text: `Please click on the following link to confirm your registered user account: ${FRONTEND_LINK}/confirmaccount/?token=${confirmToken}`
+            text: `Please click on the following link to confirm your registered user account: https://larapollehn.de/api/confirm/${confirmToken}`
         });
     }
 

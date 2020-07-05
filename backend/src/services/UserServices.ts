@@ -59,7 +59,6 @@ const loginUser = async (expressRequest, expressResponse) => {
     const username = expressRequest.body['username'];
     const password = expressRequest.body['password'];
     log.debug('user wants to login with following credentials:', username, password);
-
     if (username && typeof username === 'string' && password && typeof password === 'string') {
         try {
 
@@ -216,7 +215,7 @@ const confirmUserAccount = async (expressRequest, expressResponse) => {
                 await sqlAccess.deleteConfirmToken(confirmToken);
                 await sqlAccess.commit();
                 log.debug('User account was confirmed', confirmToken);
-                expressResponse.status(200).send('User account was confirmed');
+                expressResponse.redirect(process.env.FRONTEND_LINK);
             }
         } catch (e) {
             await sqlAccess.rollback();
