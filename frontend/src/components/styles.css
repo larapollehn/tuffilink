@@ -115,20 +115,72 @@ Form{
 
 .urlCard{
     margin-top: 15px;
+    background-color:  #baceed;
 }
 
+.card{
+    border: none;
+    text-align: left;
+}
+
+.list-group-item{
+    border: none;
+    padding: 0.4rem 0.5rem;
+    font-weight: normal;
+}
+
+.originalUrlItem{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tinylinkItem{
+    font-weight: bold;
+    color: #5e79d2;
+}
+
+.deleteBtn{
+    border: none;
+    background-color: #ffffff;
+}
+
+svg{
+   pointer-events: none;
+}
 
 @media only screen and (min-device-width: 426px){
     #homeScreen{
         text-align: center;
     }
+
+    #userpageContainer{
+        text-align: center;
+    }
+
+    .elephantLogo{
+        width: 40%;
+        margin: 0 auto;
+    }
     Form{
         text-align: left;
-        width: 30%;
+        width: 900px;
         margin: 0 auto;
     }
     .optionsSection{
         width: 30%;
+        margin: 0 auto;
+    }
+
+    .originalUrlItem{
+        max-width: 500px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .urlCard{
+        width: 900px;
         margin: 0 auto;
     }
 }
