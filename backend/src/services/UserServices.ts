@@ -137,6 +137,7 @@ const resetForgottenPassword = async (expressRequest, expressResponse) => {
     const forgotPasswordToken = expressRequest.body['reset_password_token'];
     const newPassword = expressRequest.body['new_password'];
     const hashedNewPassword = pbkdf.hashPBKDF2(newPassword);
+    log.debug("Reset password with token", forgotPasswordToken);
     if (forgotPasswordToken && typeof forgotPasswordToken === 'string' &&
         newPassword && typeof newPassword === 'string'){
         try{
