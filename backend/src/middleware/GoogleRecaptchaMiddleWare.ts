@@ -28,6 +28,7 @@ export function recaptchaPath(req, res, next) {
             res.status(403).send("Recaptcha token missing");
         }
     }else{
-        log.debug("Incoming request with google recaptcha path will be skipped because of policy")
+        log.debug("Incoming request with google recaptcha path will be skipped because of policy");
+        next();
     }
 }
