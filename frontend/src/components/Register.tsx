@@ -38,7 +38,7 @@ class Register extends React.Component{
                 }
             }).then((response) => {
                 console.log('user registration successful');
-                toast.success('User was registered. Please confirm your account by clicking the link you will receive per mail.')
+                toast.success('User account successfully created.')
             }).catch((error) => {
                 if(error.response.status === 409){
                     toast.error('User already exists');
@@ -47,20 +47,19 @@ class Register extends React.Component{
                 }
             });
         } else {
-            toast.error("❕ Please complete required fields.");
+            toast.error("Please complete required fields.");
         }
     }
 
     render() {
         return (
             <div id="home">
-                <Navbar  expand="lg">
-                    <Navbar.Brand href="#home">tinylink</Navbar.Brand>
-                </Navbar>
+                <p className={"appTitle"}>tuffilink</p>
 
                 <div id="homeScreen">
                     <ToastContainer/>
-                    <p id="homeTitle">Start by<br/> registering a user account</p>
+                    <p id="homeTitle">Start by creating a user account</p>
+                    <p className="subTitle">Choose a unique username, set a password and verify your account trough the link we sent to your account email address.</p>
                     <Form>
                         <Form.Group controlId="registerEmail">
                             <Form.Label>Email *</Form.Label>
@@ -78,13 +77,13 @@ class Register extends React.Component{
                         </Form.Group>
                     </Form>
                     <div className="btnContainer">
-                        <Button variant="light" type="submit" id="registerBtn" onClick={this.register}>Register</Button>
+                        <Button variant="light" type="submit"  className="homeBtn" onClick={this.register}>Register</Button>
                     </div>
 
                     <Container className="optionsSection">
                         <Row>
-                            <Col className="register"><Link to="/" className="register">Login</Link></Col>
-                            <Col className="resetPassword"><Link to="/passwordReset" className="register">Forgot Password?</Link></Col>
+                            <Col className="register"><Link to="/" className="pageDirection">Back to Login</Link></Col>
+                            <Col className="resetPassword"><Link to="/passwordReset" className="pageDirection">Forgot Password?</Link></Col>
                         </Row>
                     </Container>
                 </div>

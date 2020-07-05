@@ -3,7 +3,7 @@
     font-weight: bold;
 }
 #home{
-    height: 100vh;
+    max-height: 100vh;
     width: 100%;
     text-align: center;
 }
@@ -49,13 +49,11 @@
 
 .subTitle{
     color: #585757;
-    font-weight: bold;
 }
 
 Form{
     margin-top: 20px;
-    color: whitesmoke;
-    font-weight: bold;
+    color: #585757;
 }
 
 .form-control{
@@ -67,8 +65,14 @@ Form{
     color: whitesmoke;
     font-weight: bold;
     min-width: 100px;
+    border-color: #E26D5A;
 }
 
+.homeBtn:hover{
+    background-color: #E26D5A;
+    color: whitesmoke;
+    font-weight: bold;
+}
 
 .btnContainer{
     text-align: center;
@@ -90,6 +94,26 @@ Form{
     text-align: right;
     color: whitesmoke;
 }
+
+
+/** USERPAGE **/
+
+.shortUserPageContainer{
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+#urlInput{
+    margin: 20px 0;
+    padding: 20px 10px;
+    background-color: #baceed;
+    text-align: center;
+}
+
+.urlCard{
+    margin-top: 15px;
+}
+
 
 @media only screen and (min-device-width: 426px){
     #homeScreen{

@@ -35,20 +35,19 @@ class PasswordReset extends React.Component {
                 toast.error('Something went wrong. Please try again.');
             });
         } else {
-            toast.error("❕ Please complete required fields.");
+            toast.error("Please complete required fields.");
         }
     }
 
     render() {
         return (
             <div id="home">
-                <Navbar expand="lg">
-                    <Navbar.Brand href="#home">tinylink</Navbar.Brand>
-                </Navbar>
+                <p className={"appTitle"}>tuffilink</p>
 
                 <div id="homeScreen">
                     <ToastContainer/>
-                    <p id="homeTitle">Forgot your Password?<br/>Don't worry.</p>
+                    <p id="homeTitle">Forgotten your Password?<br/>Don't worry.</p>
+                    <p className="subTitle">Enter your account email address to receive an email to reset your password.</p>
                     <Form>
                         <Form.Group controlId="resetPasswordEmail">
                             <Form.Label>Email *</Form.Label>
@@ -56,13 +55,13 @@ class PasswordReset extends React.Component {
                         </Form.Group>
                     </Form>
                     <div className="btnContainer">
-                        <Button variant="light" type="submit" id="loginBtn" onClick={this.resetPassword}>Reset</Button>
+                        <Button variant="light" type="submit" id="loginBtn" className={"homeBtn"} onClick={this.resetPassword}>Reset</Button>
                     </div>
 
                     <Container className="optionsSection">
                         <Row>
-                            <Col className="register"><Link to="/" className="register">Login</Link></Col>
-                            <Col className="resetPassword"><Link to="/register" className="register">Register
+                            <Col className="register"><Link to="/" className="pageDirection">Back to Login</Link></Col>
+                            <Col className="resetPassword"><Link to="/register" className="pageDirection">Register
                                 Now!</Link></Col>
                         </Row>
                     </Container>

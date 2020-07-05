@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Navbar from "react-bootstrap/Navbar";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "./home.css";
+import "./styles.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -60,7 +60,7 @@ class Home extends React.Component<any, any> {
                 log.debug('error', error);
             });
         } else {
-            toast.error("❕ Please complete required fields.");
+            toast.error("Please complete required fields.");
         }
     }
 

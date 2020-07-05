@@ -1,6 +1,6 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "./userpage.css";
+import "./styles.css";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
@@ -147,7 +147,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             <div id="userpageContainer">
                 <ToastContainer/>
                 <Navbar expand="lg">
-                    <Navbar.Brand href="/">tinylink</Navbar.Brand>
+                    <Navbar.Brand><Link className={"appTitle"} to="/">tuffilink</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
@@ -157,19 +157,21 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-                <div id="userpage">
-                    <p id="userpageTitle">Shorten your urls. Use and share whenever!</p>
-                    <div id="urlInput">
-                        <Form>
-                            <Form.Group controlId="longUrl">
-                                <Form.Control type="text" placeholder="https://example.com/way/too/long"/>
-                            </Form.Group>
-                        </Form>
-                        <Button variant="dark" type="submit" onClick={this.processUrl}>
+                <div className="shortUserPageContainer">
+                    <p id="homeTitle">Shorten urls now. Use and share whenever!</p>
+                </div>
+
+                <div id="urlInput">
+                    <Form>
+                        <Form.Group controlId="longUrl">
+                            <Form.Control type="text" placeholder="https://example.com/way/too/long"/>
+                        </Form.Group>
+                        <Button variant="light" type="submit" className="homeBtn" onClick={this.processUrl}>
                             Go
                         </Button>
-                    </div>
-                    <Card>
+                    </Form>
+
+                    <Card className={"urlCard"}>
                         <ListGroup variant="flush">
                             {
                                 this.state.urls.map((url, i) =>
