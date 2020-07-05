@@ -89,7 +89,7 @@ class SQLAccess {
         return this.pool.query({
             rowMode: 'array',
             name: 'delete-used-reset-token',
-            text: `DELETE FROM forgot_password_tokens where token = $1;`,
+            text: `DELETE FROM forgot_password_tokens where token = $1`,
             value: [resetToken]
         })
     }
