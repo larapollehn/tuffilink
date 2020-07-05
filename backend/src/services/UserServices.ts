@@ -141,7 +141,8 @@ const resetForgottenPassword = async (expressRequest, expressResponse) => {
         newPassword && typeof newPassword === 'string'){
         try{
             sqlAccess.begin();
-            const resetPasswordResult = await sqlAccess.resetPassword(forgotPasswordToken, hashedNewPassword).rows;
+            const query = await sqlAccess.resetPassword(forgotPasswordToken, hashedNewPassword);
+            const resetPasswordResult = query.rows;
             log.debug('User password change result:', resetPasswordResult);
             if (resetPasswordResult.length !== 1){
                 sqlAccess.rollback();
