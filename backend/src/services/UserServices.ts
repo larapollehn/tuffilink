@@ -151,7 +151,11 @@ const resetForgottenPassword = async (expressRequest, expressResponse) => {
                 return;
             } else {
                 log.debug('User password was changed for user with id:', resetPasswordResult[0][0]);
-                await sqlAccess.deleteUsedResetPasswordToken(forgotPasswordToken);
+                try {
+                    await sqlAccess.deleteUsedResetPasswordToken(forgotPasswordToken);
+                }catch (e) {
+                    log.error(e.stack);
+                }
                 sqlAccess.commit();
                 expressResponse.status(200).send('User password was changed');
             }
