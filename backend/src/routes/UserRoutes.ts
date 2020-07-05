@@ -18,6 +18,6 @@ userRouter.post('/login', loginUser);
 userRouter.put('/password', protectedPath, changeUserPassword);
 userRouter.post('/forgot/password', recaptchaPath, sendResetPasswordMail);
 userRouter.put('/forgot/password/reset', resetForgottenPassword);
-userRouter.post('/confirm/:confirm_token', confirmUserAccount);
+userRouter.get('/confirm/:confirm_token', confirmUserAccount);
 
 export default userRouter;
