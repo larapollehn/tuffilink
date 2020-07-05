@@ -60,7 +60,7 @@ Form{
     height: calc(2em + .75rem + 2px);
 }
 
-.homeBtn{
+.homeBtn, .goBtn{
     background-color: #E26D5A;
     color: whitesmoke;
     font-weight: bold;
@@ -68,7 +68,7 @@ Form{
     border-color: #E26D5A;
 }
 
-.homeBtn:hover{
+.homeBtn:hover, .goBtn:hover{
     background-color: #E26D5A;
     color: whitesmoke;
     font-weight: bold;
@@ -154,37 +154,46 @@ svg{
 }
 
 @media only screen and (min-device-width: 426px){
-    #homeScreen{
+    #homeScreen, #userpageContainer{
         text-align: center;
     }
-
-    #userpageContainer{
-        text-align: center;
-    }
-
     .elephantLogo{
         width: 40%;
         margin: 0 auto;
     }
     Form{
         text-align: left;
-        width: 900px;
-        margin: 0 auto;
     }
-    .optionsSection{
-        width: 30%;
+    .optionsSection, .subTitle, .homeBtn, Form, .urlCard, .shortUserPageContainer {
+        width: 80%;
         margin: 0 auto;
     }
 
+    .goBtn{
+        width: 100%;
+    }
     .originalUrlItem{
         max-width: 500px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+}
 
-    .urlCard{
-        width: 900px;
+@media only screen and (min-device-width: 769px){
+
+    .optionsSection, .subTitle, .homeBtn, Form, .urlCard, .userpageNav {
+        width: 50%;
+        margin: 0 auto;
+    }
+    .goBtn{
+        width: 100%;
+    }
+
+}
+
+@media only screen and (min-device-width: 1875px){
+    .list-group{
         margin: 0 auto;
     }
 }

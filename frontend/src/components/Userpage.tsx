@@ -174,7 +174,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                         <Form.Group controlId="longUrl">
                             <Form.Control type="text" placeholder="https://example.com/way/too/long"/>
                         </Form.Group>
-                        <Button variant="light" type="submit" className="homeBtn" onClick={this.processUrl}>
+                        <Button variant="light" type="submit" className="goBtn" onClick={this.processUrl}>
                             Go
                         </Button>
                     </Form>
