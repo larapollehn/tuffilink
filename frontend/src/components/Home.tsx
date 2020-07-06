@@ -78,7 +78,7 @@ class Home extends React.Component<any, any> {
                     <div id="homeScreen">
                         <ToastContainer/>
                         <img className={"elephantLogo"} src={elephants} alt="elephant-logo"/>
-                        <p id="homeTitle">Create And Share Tinylinks</p>
+                        <p id="homeTitle">Create And Share tiny links</p>
                         <p className="subTitle">Save time and confusion by using shortened links, reusable and easy to remember.</p>
                         <Form>
                             <Form.Group controlId="loginUsername">
