@@ -1,13 +1,8 @@
 import * as React from 'react';
 import elephants from "./sad_elephant.png";
 import {Link} from "react-router-dom";
-import Col from "react-bootstrap/Col";
 
 class Page404 extends React.Component{
-    constructor(props: {}) {
-        super(props);
-    }
-
     render() {
         return (
             <div id={"page404"}>

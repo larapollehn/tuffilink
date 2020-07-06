@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {Link} from "react-router-dom";
 import elephants from "./elephants_cropped.png";
 import Pagination from "react-bootstrap/Pagination";
-import {BorderWidth, Chart, Point, ChartColor} from 'chart.js';
+import {Chart} from 'chart.js';
 import Modal from "react-bootstrap/Modal";
 
 interface userPageProps {
@@ -263,6 +263,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         console.log(displayingData);
         // @ts-ignore
         const ctx = document.getElementById('myChart').getContext('2d');
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         let myLineChart = new Chart(ctx, {
             type: 'line',
             data: {

@@ -56,7 +56,8 @@ class Home extends React.Component<any, any> {
                 }
 
             }).catch((error) => {
-                log.debug('error', error);
+                log.debug('error', error.response.data);
+                toast.error(error.response.data);
             });
         } else {
             toast.error("Please complete required fields.");

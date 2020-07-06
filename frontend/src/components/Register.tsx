@@ -8,10 +8,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import log from "../utils/Logger";
 
 
-class Register extends React.Component{
-    constructor(props: {}) {
+class Register extends React.Component<any, any>{
+    constructor(props: any) {
         super(props);
         this.register = this.register.bind(this);
     }
@@ -37,9 +38,16 @@ class Register extends React.Component{
                 }
             }).then((response) => {
                 console.log('user registration successful');
-                toast.success('User account successfully created.')
+                toast.success('User account successfully created.');
+                try {
+                    this.props.history.push({
+                        pathname: '/',
+                    })
+                } catch (e) {
+                    log.debug("Error redirecting to page 'login'", e.stack);
+                }
             }).catch((error) => {
-                if(error.response.status === 409){
+                if( error.response &&  error.response.status === 409){
                     toast.error('User already exists');
                 } else {
                     toast.error('Something went wrong. Please try again.');
