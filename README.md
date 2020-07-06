@@ -4,11 +4,6 @@ Scalable system for shortening links. Documentation of the API can be found at
 
 https://app.swaggerhub.com/apis/larapollehn/tinylink/1.0.0
 
-### Why the name?
-Tuffi was a female circus elephant that became famous in Germany during 1950 when she accidentally fell from the Wuppertal Schwebebahn into the River Wupper underneath.
-
-![Tuffi](https://i.pinimg.com/originals/67/c8/af/67c8af0e233dd3ffb67268bccf7cb1f0.jpg)
-
 ### Mobile (Xiaomi Redmi Note 5)
 
 <table border="1" width="100%">
@@ -25,3 +20,8 @@ Tuffi was a female circus elephant that became famous in Germany during 1950 whe
         <td><img src="images/p8.jpeg" width="200"></td>
     </tr>
 </table>
+
+### Why the name?
+Tuffi was a female circus elephant that became famous in Germany during 1950 when she accidentally fell from the Wuppertal Schwebebahn into the River Wupper underneath.
+
+![Tuffi](https://i.pinimg.com/originals/67/c8/af/67c8af0e233dd3ffb67268bccf7cb1f0.jpg)
