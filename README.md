@@ -20,3 +20,7 @@ https://app.swaggerhub.com/apis/larapollehn/tinylink/1.0.0
         <td><img src="images/p8.jpeg" width="200"></td>
     </tr>
 </table>
+
+### Desktop (Full HD)
+
+![Desktop](images/desktop.png)
