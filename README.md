@@ -1,4 +1,4 @@
-# ![tuffilink](https://tinylink.larapollehn.de)
+# [tuffilink](https://tinylink.larapollehn.de)
 
 Scalable system for shortening links. Documentation of the API can be found at 
 
