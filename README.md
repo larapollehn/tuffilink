@@ -14,9 +14,9 @@ https://app.swaggerhub.com/apis/larapollehn/tinylink/1.0.0
         <td><img src="images/p4.jpeg" width="200"></td>
     </tr>
     <tr>
-        <td>&nbps;</td>
-        <td>&nbps;</td>
-        <td>&nbps;</td>
-        <td>&nbps;</td>
+        <td><img src="images/p5.jpeg" width="200"></td>
+        <td><img src="images/p6.jpeg" width="200"></td>
+        <td><img src="images/p7.jpeg" width="200"></td>
+        <td><img src="images/p8.jpeg" width="200"></td>
     </tr>
 </table>
