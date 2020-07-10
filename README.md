@@ -4,6 +4,11 @@ Scalable system for shortening links. Documentation of the API can be found at
 
 https://app.swaggerhub.com/apis/larapollehn/tinylink/1.0.0
 
+### Features
+* Shorten as many urls as you want
+* Use and share links as they are persistet
+* Get a look at some statistics providing an overview on how often a lin was used
+
 ### Mobile (Xiaomi Redmi Note 5)
 
 <table border="1" width="100%">
@@ -20,11 +25,6 @@ https://app.swaggerhub.com/apis/larapollehn/tinylink/1.0.0
         <td><img src="images/p8.jpeg" width="200"></td>
     </tr>
 </table>
-
-### Features
-* Shorten as many urls as you want
-* Use and share links as they are persistet
-* Get a look at some statistics providing an overview on how often a lin was used
 
 ### Desktop (Full HD)
 ![Desktop](images/desktop.png)
