@@ -21,6 +21,11 @@ https://app.swaggerhub.com/apis/larapollehn/tinylink/1.0.0
     </tr>
 </table>
 
+### Features
+* Shorten as many urls as you want
+* Use and share links as they are persistet
+* Get a look at some statistics providing an overview on how often a lin was used
+
 ### Desktop (Full HD)
 ![Desktop](images/desktop.png)
 
