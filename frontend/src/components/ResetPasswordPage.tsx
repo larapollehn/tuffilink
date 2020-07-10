@@ -10,6 +10,9 @@ import log from "../utils/Logger";
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 
+/**
+ * if user clicks on link in email to reset password he gets to this page
+ */
 class ResetPasswordPage extends React.Component<any, any>{
     constructor(props: any) {
         super(props);

@@ -2,6 +2,9 @@ import * as React from 'react';
 import elephants from "./sad_elephant.png";
 import {Link} from "react-router-dom";
 
+/**
+ * if user uses a link whose original-url is faulty
+ */
 class Page404 extends React.Component{
     render() {
         return (

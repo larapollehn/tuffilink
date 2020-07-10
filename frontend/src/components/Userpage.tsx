@@ -18,6 +18,9 @@ import Pagination from "react-bootstrap/Pagination";
 import {Chart} from 'chart.js';
 import Modal from "react-bootstrap/Modal";
 
+/**
+ * empty props for future use
+ */
 interface userPageProps {
 }
 
@@ -38,15 +41,24 @@ class Userpage extends React.Component<userPageProps, userPageState> {
     constructor(props: {}) {
         super(props);
         this.state = {
+            // How many urls the user has
             count: 0,
+            // the urls from the user
             urls: [],
+            // id of current user
             userId: 0,
             userName: '',
+            // Number if page querried from db
             pageNumber: 0,
+            // Number of urls retrieved from db
             pageSize: 5,
+            // user JWT token
             token: '',
+            // Indices of pagination
             pagination: [],
+            // Number of days used to build click statistic
             days: 7,
+            // State of modal, showing the click statistics
             show: false
         }
         this.getUrlCount = this.getUrlCount.bind(this);
@@ -70,15 +82,14 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             this.setState({
                 count: response.data
             })
-            let urls = Math.ceil(response.data / this.state.pageSize);
-            log.debug('urls', urls);
-            if (urls > 1) {
-                let pagination = [];
-                for (let i = 0; i < urls; i++) {
-                    pagination.push(i);
+            let numberOfPaginationPages = Math.ceil(response.data / this.state.pageSize);
+            if (numberOfPaginationPages > 1) {
+                let paginationIndices = [];
+                for (let i = 0; i < numberOfPaginationPages; i++) {
+                    paginationIndices.push(i);
                 }
                 this.setState({
-                    pagination: pagination
+                    pagination: paginationIndices
                 })
             } else {
                 this.setState({
@@ -88,6 +99,9 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             log.debug('Fetched Url count', response.data);
             return;
         }).catch((error) => {
+            /**
+             *
+             */
             log.debug('Url count could not be fetched');
         })
     }
@@ -113,9 +127,12 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         });
     }
 
+    /**
+     * Url from user input is persistet in database
+     * @param event
+     */
     processUrl(event: any) {
         event.preventDefault();
-        console.log('clicked process url');
         const urlInput = document.getElementById('longUrl') as HTMLInputElement;
         const longUrl = urlInput.value;
         const token = localStorageManager.getUserToken();
@@ -144,6 +161,11 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         }
     }
 
+    /**
+     * Get the most recent state of url count and urls from database
+     * @param token user JWT token user for authorization
+     * @param pageNumber number of page requsted if pagination is present
+     */
     async fetchUrlData(token: string, pageNumber?: number) {
         await this.getUrlCount(this.state.userId, token).then(() => {
             log.debug('New count of urls fetched');
@@ -157,6 +179,10 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         });
     }
 
+    /**
+     * delete token and remove from database
+     * @param event
+     */
     deleteToken(event: any) {
         log.debug('User wants to delete url');
         const token = localStorageManager.getUserToken();
@@ -180,13 +206,19 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                 this.fetchUrlData(token);
             }).catch((error) => {
                 log.debug('Deleting url did not work', error.stack);
+                toast.error('That did not work. Refresh the page and please try again.');
             })
         } else {
             log.debug('Id of url not identified from clicked button or token missing');
-            toast.error('That did not work. Refresh the page and please try again.')
+            toast.error('That did not work. Refresh the page and please try again.');
         }
     }
 
+    /**
+     * pagination
+     * fetch page and number of urls from db based on pagination request
+     * @param event
+     */
     changePage(event: any) {
         let page = event.target.id;
         log.debug('User changed page', page);
@@ -204,7 +236,6 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             }).catch(() => {
                 log.debug('Urls could not be fetched');
             });
-
         } else {
             log.debug('token not valid, next few urls could not be fetched');
         }
@@ -227,6 +258,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                 });
                 this.buildStatistics(response.data);
             }).catch((error) => {
+                toast.error('That did not work, please try again.');
                 log.debug('Statistics could not be fetched', error.stack);
             })
         } else {
@@ -234,16 +266,25 @@ class Userpage extends React.Component<userPageProps, userPageState> {
         }
     }
 
+    /**
+     * Closes modal of click statistics
+     */
     handleClose() {
         this.setState({
             show: false
         });
     }
 
+    /**
+     * for the individual url
+     * click statistics displaying the number of clicks within a set time series
+     * @param data is array of clicks and date of them for specific url
+     */
     buildStatistics(data: []) {
-        console.log(data);
         const mappingData = new Map();
-        for (let i = 0; i <= 7; i++) {
+
+        // get todays date and of the last x days
+        for (let i = 0; i <= this.state.days; i++) {
             const currentDate = new Date();
             currentDate.setHours(0);
             currentDate.setMinutes(0);
@@ -252,19 +293,21 @@ class Userpage extends React.Component<userPageProps, userPageState> {
             currentDate.setDate(currentDate.getDate() - i);
             mappingData.set(currentDate, 0);
         }
+
+        // map Date and number of clicks
         for (let i = 0; i < data.length; i++) {
             mappingData.set(new Date(data[i]["day"]), Number(data[i]["count"]));
         }
+
+        // generates date labels for the chart
         const displayingData = new Map();
         const keys = Array.from(mappingData.keys());
         for (let i = 0; i < keys.length; i++) {
             displayingData.set(`${keys[i].getDate()}.${keys[i].getMonth() + 1}`, mappingData.get(keys[i]));
         }
-        console.log(displayingData);
         // @ts-ignore
         const ctx = document.getElementById('myChart').getContext('2d');
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        let myLineChart = new Chart(ctx, {
+        new Chart(ctx, {
             type: 'line',
             data: {
                 labels: Array.from(displayingData.keys()).reverse(),
@@ -409,7 +452,7 @@ class Userpage extends React.Component<userPageProps, userPageState> {
                 log.debug('Url count could not be fetched from database');
             });
         } else {
-            log.debug('Userdata is missing');
+            log.debug('User data is missing');
         }
 
         let logoutLink = document.getElementById('logoutLink');

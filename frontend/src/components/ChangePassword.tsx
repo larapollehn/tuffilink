@@ -13,6 +13,10 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
+/**
+ * User can change password when logged in.
+ * Authorization per token
+ */
 class ChangePassword extends React.Component {
     constructor(props: {}) {
         super(props);
@@ -89,6 +93,9 @@ class ChangePassword extends React.Component {
     }
 
     componentDidMount() {
+        /**
+         * Event Listener for Logout Button, when user wants to logout of app
+         */
         let logoutLink = document.getElementById('logoutLink');
         logoutLink?.addEventListener('click',() => {
             log.debug('user logged out');

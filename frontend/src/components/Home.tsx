@@ -18,6 +18,10 @@ import Userpage from "./Userpage";
 import log from "../utils/Logger";
 import elephants from "./elephants_cropped.png";
 
+
+/**
+ * Login screen with links to registration and forgot password page
+ */
 class Home extends React.Component<any, any> {
     constructor(props: any) {
         super(props);

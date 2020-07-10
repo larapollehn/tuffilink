@@ -9,6 +9,9 @@ import Col from "react-bootstrap/Col";
 import {Link} from "react-router-dom";
 import axios from "axios";
 
+/**
+ * User can ask for password reset if he can not login
+ */
 class PasswordReset extends React.Component {
     constructor(props: {}) {
         super(props);
