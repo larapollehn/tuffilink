@@ -25,6 +25,6 @@ prefix.apply(log.getLogger('critical'), {
     },
 });
 
-log.setLevel(process.env.LOG_LEVEL || "debug");
+log.setLevel("error");
 log.info("Current logging level", log.getLevel());
 export default log;
