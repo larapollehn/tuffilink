@@ -7,6 +7,10 @@ const axios = require('axios');
 const RECAPTCHA_TOKEN = process.env.RECAPTCHA_TOKEN;
 const RECAPTCHA_ON = process.env.RECAPTCHA_ON;
 
+/**
+ * NOT USED
+ * for future use
+ */
 export function recaptchaPath(req, res, next) {
     const token = req.query["recaptcha"];
     if(RECAPTCHA_ON === "true") {

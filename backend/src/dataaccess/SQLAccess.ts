@@ -2,12 +2,15 @@ import {v4 as uuidv4} from "uuid";
 const Pool = require('pg').Pool;
 import log from "../log/Logger";
 
+/**
+ * manages access to postgres database
+ */
 class SQLAccess {
     private pool = new Pool({
-        user: process.env.POSTGRES_USER || 'postgres',
-        host: process.env.POSTGRES_HOST || 'localhost',
-        database: process.env.POSTGRES_DB || 'tinylink',
-        password: process.env.POSTGRES_PASSWORD || 'postgres',
+        user: process.env.POSTGRES_USER,
+        host: process.env.POSTGRES_HOST,
+        database: process.env.POSTGRES_DB,
+        password: process.env.POSTGRES_PASSWORD,
         port: 5432
     });
 
@@ -15,6 +18,7 @@ class SQLAccess {
         log.debug("Using SQL's pool with following information:", this.pool.options.host, this.pool.options.database, this.pool.options.user);
     }
 
+    // initialize db by running scripts for table, index creation
     initialize(data){
         this.pool.query(data);
     }
@@ -31,6 +35,12 @@ class SQLAccess {
         return this.pool.query('ROLLBACK');
     }
 
+    /**
+     * after user registration user data is persisted and user id is given as response
+     * @param username of user
+     * @param hashedPassword of user
+     * @param email of user
+     */
     registerUserResult(username, hashedPassword, email) {
         return this.pool.query({
             rowMode: 'array',
@@ -40,6 +50,10 @@ class SQLAccess {
         });
     }
 
+    /**
+     * token generated for newly registered user is persisted
+     * @param insertedUserId
+     */
     insertVerificationResult(insertedUserId) {
         return this.pool.query({
             rowMode: 'array',
@@ -58,6 +72,10 @@ class SQLAccess {
         });
     }
 
+    /**
+     * if confirm-token exists the user account is confirmed and the user can login
+     * @param confirm_token
+     */
     confirmUser(confirm_token){
         return this.pool.query({
             rowMode: 'array',
@@ -67,6 +85,10 @@ class SQLAccess {
         });
     }
 
+    /**
+     * after user confirmed account by clicking the provided link in the email the confirm-token is deleted
+     * @param confirm_token
+     */
     deleteConfirmToken(confirm_token) {
         return this.pool.query({
             rowMode: 'array',
@@ -76,6 +98,11 @@ class SQLAccess {
         });
     }
 
+    /**
+     * token send to user to let him reset password is deleted
+     * if a new request to reset the password is made without clicking the previously send link
+     * @param email
+     */
     deleteOldResetPasswordToken(email){
         return this.pool.query({
             rowMode: 'array',
@@ -85,6 +112,11 @@ class SQLAccess {
         })
     }
 
+    /**
+     * if user reset password after clicking the link in his email,
+     * the send token is delted
+     * @param resetToken
+     */
     deleteUsedResetPasswordToken(resetToken){
         log.debug("Deleting used reset password token for token", resetToken)
         return this.pool.query({
@@ -95,6 +127,10 @@ class SQLAccess {
         })
     }
 
+    /**
+     * token will be send to user as param of link to let him reset the password
+     * @param email
+     */
     createResetPasswordToken(email){
         return this.pool.query({
             rowMode: 'array',
@@ -122,6 +158,9 @@ class SQLAccess {
         })
     }
 
+    /**
+     * if user shortens an url, the original and shortened form is persitet in the db
+     */
     saveUrl(shortUrl, originalUrl, username){
         return this.pool.query({
             rowMode: 'array',
@@ -131,6 +170,11 @@ class SQLAccess {
         })
     }
 
+    /**
+     * if a shortened link is used, the original url belonging to this shortened url is fetched from db
+     * the click count used for statistics is incremented
+     * the original url is returned needed for redirecting in the frontend
+     */
     getOriginalUrl(shortUrl){
         return this.pool.query({
             rowMode: 'array',
@@ -140,6 +184,10 @@ class SQLAccess {
         });
     }
 
+    /**
+     * documents every click made for a url
+     * @param shortUrl
+     */
     createClick(shortUrl){
         return this.pool.query({
             rowMode: 'array',
@@ -170,6 +218,10 @@ class SQLAccess {
         })
     }
 
+    /**
+     * overall count of users shortened urls
+     * @param user_id
+     */
     urlCount(user_id){
         return this.pool.query({
             rowMode: 'array',
@@ -191,7 +243,7 @@ class SQLAccess {
     getLink(user_id, url_id){
         return this.pool.query({
             rowMode: 'array',
-            name: 'delete-url',
+            name: 'get-link',
             text: 'SELECT * FROM links WHERE id = $1 AND user_id = $2',
             values: [url_id, user_id]
         })

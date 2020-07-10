@@ -2,6 +2,13 @@
 
 import {jwt} from "../algorithms/JWT";
 
+/**
+ * The provided JWT Token in the authorization header is split
+ * user information in form of payload of token is returned
+ * @param req
+ * @param res
+ * @param next
+ */
 export function protectedPath(req, res, next) {
     const token = req.headers["authorization"];
     if(token){

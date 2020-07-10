@@ -1,3 +1,7 @@
+/**
+ * formats the result of querying the click counts of a url
+ * @param queryResult
+ */
 export default function queryConvert(queryResult) {
     const result = [];
     for (let i = 0; i < queryResult.rows.length; i++){

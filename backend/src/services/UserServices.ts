@@ -16,7 +16,7 @@ const registerNewUser = async (expressRequest, expressResponse) => {
     const password: string = expressRequest.body['password'];
     const email: string = expressRequest.body['email'];
 
-    log.debug('User wants to be registered with following dataaccess', username, password, email);
+    log.debug('User wants to be registered with following data access', username, password, email);
 
     if (username && typeof username === 'string' && password && typeof password === 'string' && email && typeof email === 'string') {
         const hashedPassword = pbkdf.hashPBKDF2(password);
@@ -36,7 +36,7 @@ const registerNewUser = async (expressRequest, expressResponse) => {
                 expressResponse.status(201).send('User registered and created in db');
             } catch (e) {
                 await sqlAccess.rollback();
-                log.debug('Can not create email verification token. Sorry bro', e.stack);
+                log.debug('Can not create email verification token.', e.stack);
                 expressResponse.status(500).send(e.message);
             }
         } catch (e) {

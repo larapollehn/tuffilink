@@ -3,8 +3,10 @@ const nodemailer = require("nodemailer");
 const MAILPWD = process.env.MAILPWD;
 const SENDER = process.env.SENDER;
 const HOST = process.env.HOST;
-const FRONTEND_LINK = process.env.FRONTEND_LINK;
 
+/**
+ * used to send user mail for account verifying and password reset
+ */
 class EmailAccess{
     private transporter = nodemailer.createTransport({
         host: HOST,
@@ -16,6 +18,11 @@ class EmailAccess{
         },
     });
 
+    /**
+     * send link with random token to user after registration for account verification
+     * @param receiver mail of user
+     * @param confirmToken is token used as param in url send to user
+     */
     sendConfirmAccountMail(receiver, confirmToken){
         return this.transporter.sendMail({
             from: SENDER,
@@ -25,6 +32,11 @@ class EmailAccess{
         });
     }
 
+    /**
+     * send link ti user after he demands a password reset
+     * @param receiver mail of user
+     * @param token is token used as param in url send to user
+     */
     sendResetPasswordLink(receiver, token){
         return this.transporter.sendMail({
             from: SENDER,

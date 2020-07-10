@@ -3,6 +3,11 @@ import log from "../log/Logger";
 import {url} from "../algorithms/UrlShortener";
 import queryConvert from "../utils/QueryConverter";
 
+/**
+ * shorten the original url with urlShortener and persist both in db
+ * @param expressRequest
+ * @param expressResponse
+ */
 const createURL = async (expressRequest, expressResponse) => {
     const originalUrl = expressRequest.body['original_url'];
     const username = expressRequest.user['username']
@@ -10,7 +15,6 @@ const createURL = async (expressRequest, expressResponse) => {
     if (originalUrl && typeof originalUrl === 'string'){
         try{
             const createUrlResult = await sqlAccess.saveUrl(shortUrl, originalUrl, username);
-            console.log(createUrlResult.rows);
             log.debug('Short url was saved');
             expressResponse.status(201).send('Url was created and saved');
         }catch (e) {
@@ -21,7 +25,6 @@ const createURL = async (expressRequest, expressResponse) => {
         expressResponse.status(400).send('Url is missing');
     }
 };
-
 
 const getUsersUrls =  async (expressRequest, expressResponse) => {
     const username = expressRequest.user['username'];
