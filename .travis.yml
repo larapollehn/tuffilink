@@ -6,5 +6,5 @@ script:
 - chmod 0600 deploy_rsa
 - eval $(ssh-agent -s)
 - ssh-add deploy_rsa
-- ssh -o StrictHostKeyChecking=no lara@larapollehn.de "cd tinylink && git pull && docker-compose up -d --build"
+- travis_wait ssh -o StrictHostKeyChecking=no lara@larapollehn.de "cd tinylink && git pull && docker-compose up -d --build"
 
