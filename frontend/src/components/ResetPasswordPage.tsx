@@ -72,11 +72,11 @@ class ResetPasswordPage extends React.Component<any, any>{
                     <Form>
                         <Form.Group controlId="resetNewPassword">
                             <Form.Label>New Password *</Form.Label>
-                            <Form.Control type="password" placeholder="Enter email"/>
+                            <Form.Control type="password" placeholder="Enter new password"/>
                         </Form.Group>
                         <Form.Group controlId="resetConfirmPassword">
                             <Form.Label>Confirm Password *</Form.Label>
-                            <Form.Control type="password" placeholder="Enter email"/>
+                            <Form.Control type="password" placeholder="Confirm new password"/>
                         </Form.Group>
                     </Form>
                     <div className="btnContainer">
