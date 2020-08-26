@@ -6,8 +6,8 @@ https://app.swaggerhub.com/apis/larapollehn/tinylink/1.0.0
 
 ### Features
 * Shorten as many urls as you want
-* Use and share links as they are persistet
-* Get a look at some statistics providing an overview on how often a lin was used
+* Use and share links as they are persisted
+* Get a look at some statistics providing an overview on how often a link was used
 
 ### Mobile (Xiaomi Redmi Note 5)
 
